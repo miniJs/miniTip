@@ -1,34 +1,65 @@
 body {
     font-family: 'Helvetica Neue',arial,helvetica,sans-serif;
+    background-color: #fafbf1;
+    color: #494949;
 }
 
 h1 {
-    color: #333;
     font-size: 24px;
-    line-height: 35px;
-    font-weight: 100;
+    line-height: 48px;
+    font-weight: bold;
     letter-spacing: 1px;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #3c3c3c;
 }
 
 h2 {
-    color: #333;
     font-size: 16px;
-    font-weight: 100;
+    font-weight: 500;
     letter-spacing: 1px;
 }
 
 #main {
-    width: 980px;
+    width: 960px;
+    font-weight: 100;
     margin:  0 auto;
 }
 
 
+
 #main section {
-    padding:  5px 0;
+    width: 260px;
+    float: left;
+    padding:  5px 60px 5px 0;
 }
+
+
 
 #main .tip-content {
     display: none;
 }
 
+#main .tip {
+    margin: 20px 0 40px;
+}
+
+
+#main .tip:hover {
+    color: #ED5C2D;
+    cursor: pointer;
+}
+
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+.clearfix { display: inline-block; }
+
+/* start commented backslash hack */
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
