@@ -136,11 +136,11 @@
             break;
           case "left":
             coordinates['left'] = coordinates.left - this.$miniTip.outerWidth() - this.getSetting('offset');
-            coordinates['top'] = coordinates['top'] - 5;
+            coordinates['top'] -= 5;
             break;
           case "right":
             coordinates['left'] = coordinates.left + this.$element.outerWidth() + this.getSetting('offset');
-            coordinates['top'] = coordinates['top'] - 5;
+            coordinates['top'] -= 5;
             break;
           default:
             coordinates['top'] = coordinates.top - this.$miniTip.outerHeight() - this.getSetting('offset');

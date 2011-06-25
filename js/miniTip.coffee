@@ -136,10 +136,10 @@ jQuery ->
                     coordinates['top'] = coordinates.top + @$element.outerHeight() + @getSetting('offset')
                 when "left"
                     coordinates['left'] = coordinates.left - @$miniTip.outerWidth() - @getSetting('offset')
-                    coordinates['top'] = coordinates['top'] - 5
+                    coordinates['top'] -= 5
                 when "right"
                     coordinates['left'] = coordinates.left  + @$element.outerWidth() + @getSetting('offset')
-                    coordinates['top'] = coordinates['top'] - 5
+                    coordinates['top'] -= 5
                 else
                     coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('offset')
 

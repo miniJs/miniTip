@@ -6,27 +6,25 @@
     z-index: 99999;
 }
 
-.minitip-content {
-    font-size: 11px;
-    padding: 8px 10px;
-    
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-
 /* THEMES - feel free to customize them */
 
 /* black - default */
 .minitip-content {
-    text-shadow: 0 0 2px #000;
+    font-size: 11px;
+    padding: 8px 10px;
     color: #fff;
+
+    text-shadow: 0 0 2px #000;
     background-color: #3C3C3C;
     border: 1px solid rgba(255, 255, 255, 0.25);
+
     box-shadow: 0 0 3px #555;
     -webkit-box-shadow: 0 0 3px #555;
     -moz-box-shadow: 0 0 3px #555;
+
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 
 /* red */
@@ -47,7 +45,6 @@
     border: 1px solid rgba(241, 90, 41, 0.25);
 }
 
-
 /* yellow */
 .yellow .minitip-content{
     background-color: #FBF59D;
@@ -55,4 +52,3 @@
     color: #3C3C3C;
     text-shadow: 0 0 2px #FFF;
 }
-
