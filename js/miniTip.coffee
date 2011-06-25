@@ -114,18 +114,20 @@ jQuery ->
                      .css('opacity', 0)
                      .show()
                      .animate({'opacity': 1}, @getSetting('showSpeed'), @getSetting('showEasing'), =>
-                @$miniTip.show()
-                setState 'visible'
+                if @getState() is 'showing'
+                    @$miniTip.show()
+                    setState 'visible'
             )
 
 
         # show miniTip
         @hide = ->
-          #if @getState() is'visible' or @getState is 'showing'
+          if @getState() is'visible' or @getState() is 'showing'
             setState 'hiding'
-            @$miniTip.animate({'opacity': 0}, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
-                @$miniTip.hide()
-                setState 'hidden'
+            @$miniTip.stop(true, true).animate({'opacity': 0}, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
+                if @getState() is 'hiding'
+                    @$miniTip.hide()
+                    setState 'hidden'
             )
 
         # init function
@@ -160,8 +162,9 @@ jQuery ->
             ($ window).resize(@updatePosition)
 
             # attach the mouseenter and mouseleave events to the element
-            @$element.bind('mouseenter', => @show())
-                     .bind('mouseleave', => @hide())
+            @$element.hover((=>@show()), (=> @hide()))
+#            @$element.bind('mouseenter', => @show())
+#                     .bind('mouseleave', => @hide())
 
         # initialise the plugin
         @init()

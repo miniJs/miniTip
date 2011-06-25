@@ -25,7 +25,7 @@ h3. Basic Example
 @</p>@
 
 * Javascript
-@$('p#ntip').miniTip();@
+@$('.tip').miniTip();@
 
 h3. Website Url
 

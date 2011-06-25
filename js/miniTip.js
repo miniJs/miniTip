@@ -77,19 +77,25 @@
           return this.$miniTip.stop(true, true).css('opacity', 0).show().animate({
             'opacity': 1
           }, this.getSetting('showSpeed'), this.getSetting('showEasing'), __bind(function() {
-            this.$miniTip.show();
-            return setState('visible');
+            if (this.getState() === 'showing') {
+              this.$miniTip.show();
+              return setState('visible');
+            }
           }, this));
         }
       };
       this.hide = function() {
-        setState('hiding');
-        return this.$miniTip.animate({
-          'opacity': 0
-        }, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), __bind(function() {
-          this.$miniTip.hide();
-          return setState('hidden');
-        }, this));
+        if (this.getState() === 'visible' || this.getState() === 'showing') {
+          setState('hiding');
+          return this.$miniTip.stop(true, true).animate({
+            'opacity': 0
+          }, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), __bind(function() {
+            if (this.getState() === 'hiding') {
+              this.$miniTip.hide();
+              return setState('hidden');
+            }
+          }, this));
+        }
       };
       this.init = function() {
         var miniTipCss;
@@ -117,11 +123,11 @@
         }
         this.updatePosition();
         ($(window)).resize(this.updatePosition);
-        return this.$element.bind('mouseenter', __bind(function() {
+        return this.$element.hover((__bind(function() {
           return this.show();
-        }, this)).bind('mouseleave', __bind(function() {
+        }, this)), (__bind(function() {
           return this.hide();
-        }, this));
+        }, this)));
       };
       return this.init();
     };
