@@ -4,7 +4,7 @@ $(function() {
 
   // miniTip Example 1 - custom attribute
   $('#tooltip-example-2 .tip').miniTip({'contentAttribute'      : 'data-tip',
-                                        'className'             : 'red',
+                                        'className'             : 'green',
                                         'offset'                : 15,
                                         'showAnimateProperties' : {'top': '-=5'},
                                         'hideAnimateProperties' : {'top': '+=5'},

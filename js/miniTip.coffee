@@ -93,7 +93,7 @@ jQuery ->
 
           # merge ojects
           arrowCss['arrow']  = $.extend {}, arrowCss['arrow'], _arrowCss
-          arrowCss['shadow'] = $.extend {}, arrowCss['arrow'], {'border-width':'7px', 'opacity': '0.30'}, _shadowCss
+          arrowCss['shadow'] = $.extend {}, arrowCss['arrow'], {'border-width':'7px', 'opacity': '0.20'}, _shadowCss
           arrowCss
 
 

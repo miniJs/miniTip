@@ -31,6 +31,8 @@
 .green .minitip-content{
     background-color: #A8D18B;
     border: 1px solid rgba(67, 144, 102, 0.25);
+    color: #3C3C3C;
+    text-shadow: 0 0 2px #FAFBF1;
 }
 
 /* blue */
@@ -50,5 +52,5 @@
     background-color: #FBF59D;
     border: 1px solid rgba(251, 245, 157, 0.25);
     color: #3C3C3C;
-    text-shadow: 0 0 2px #FFF;
+    text-shadow: 0 0 2px #FAFBF1;
 }

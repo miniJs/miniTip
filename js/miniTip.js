@@ -104,7 +104,7 @@
         arrowCss['arrow'] = $.extend({}, arrowCss['arrow'], _arrowCss);
         arrowCss['shadow'] = $.extend({}, arrowCss['arrow'], {
           'border-width': '7px',
-          'opacity': '0.30'
+          'opacity': '0.20'
         }, _shadowCss);
         return arrowCss;
       }, this);
