@@ -12,10 +12,10 @@ jQuery ->
         @defaults = {
           position              : 'bottom'          # 'bottom' | 'top' | 'left' | 'right'
           margin                : 5                 # margin to the element
-          delay                 : 200               # delay time before the tooltip appears
+          delay                 : 200               # delay time before the miniTip appears
 
           contentType           : 'attribute'       # 'attribute' | 'selector'
-          contentAttribute      : 'title'           # attribute name if content type 'attribute' i.e: 'data-tooltip'
+          contentAttribute      : 'title'           # attribute name if content type 'attribute' i.e: 'data-miniTip'
           contentSelector       : ''                # selector if content type is 'selector' i.e: '.mini-tip'
 
           showSpeed             : 400               # number, animation showing speed in milliseconds
@@ -23,23 +23,23 @@ jQuery ->
           showEasing            : ''                # easing equation on show
           hideEasing            : ''                # easing equation on hide
 
-          css                   : {}                # tooltip additional css properties
-          className             : 'minitip'         # generated tooltip className
-          contentClassName      : 'minitip-content' # generated tooltip content className
+          css                   : {}                # miniTip additional css properties
+          className             : 'minitip'         # generated miniTip className
+          contentClassName      : 'minitip-content' # generated miniTip content className
           showAnimateProperties : {}                # animate properties on show, will fadeIn by default
           hideAnimateProperties : {}                # animate properties on hde, will fadeOut by default
 
-          onLoad                : ->                # Function, called when the notification is being loaded
-          onVisible             : ->                # Function, called when the notification is loaded
-          onHide                : ->                # Function, called when notification is hiding
-          onHidden              : ->                # Function, called when notification is hidden
+          onLoad                : ->                # Function, called when the miniTip is being loaded
+          onVisible             : ->                # Function, called when the miniTip is loaded
+          onHide                : ->                # Function, called when miniTip is hiding
+          onHidden              : ->                # Function, called when miniTip is hidden
         }
 
         ## private variables
         # current state
         state = 'hidden'
 
-        # tooltip title
+        # miniTip title
         content = ''
 
         ## public variables
@@ -48,7 +48,6 @@ jQuery ->
 
         # jQuery version of DOM element attached to the plugin
         @$element = $ element
-
         
         ## private methods
         # set the current state
@@ -56,23 +55,31 @@ jQuery ->
           state = _state
 
         ## public methods
+        # get particular plugin setting
+        @getSetting = (settingKey) ->
+          @settings[settingKey]
+
+        # call one of the plugin setting functions
+        @callSettingFunction = (functionName) ->
+          @settings[functionName]()
+
         # get current state
         @getState = ->
           state
 
-        # get tooltip content
+        # get miniTip content
         @getContent = ->
           content
 
-        # set tooltip content
+        # set miniTip content
         @setContent = (_content) ->
             content = _content
 
-        # update tooltip content
+        # update miniTip content
         @updateMiniTipContent = (content) ->
             @$miniTipContent.html(content)
 
-        # get tooltip coordinates
+        # get miniTip coordinates
         @getPosition = ->
             #element position
             position = @getSetting 'position'
@@ -80,7 +87,7 @@ jQuery ->
             # element offset
             coordinates = @$element.offset()
 
-            # calculate the tooltip position
+            # calculate the miniTip position
             switch position
                 when "top"
                     coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('margin')
@@ -98,17 +105,10 @@ jQuery ->
         @updatePosition = =>
             @$miniTip.css(@getPosition())
 
-        # get particular plugin setting
-        @getSetting = (settingKey) ->
-          @settings[settingKey]
-
-        # call one of the plugin setting functions
-        @callSettingFunction = (functionName) ->
-          @settings[functionName]()
-
         # show miniTip
         @show = ->
           if @getState() is 'hidden' or @getState is 'hiding'
+            @callSettingFunction 'onLoad'
             setState 'showing'
             @$miniTip.stop(true, true)
                      .css('opacity', 0)
@@ -116,6 +116,7 @@ jQuery ->
                      .animate({'opacity': 1}, @getSetting('showSpeed'), @getSetting('showEasing'), =>
                 if @getState() is 'showing'
                     @$miniTip.show()
+                    @callSettingFunction 'onVisible'
                     setState 'visible'
             )
 
@@ -123,10 +124,13 @@ jQuery ->
         # show miniTip
         @hide = ->
           if @getState() is'visible' or @getState() is 'showing'
+            @callSettingFunction 'onHide'
             setState 'hiding'
-            @$miniTip.stop(true, true).animate({'opacity': 0}, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
+            @$miniTip.stop(true, true)
+                     .animate({'opacity': 0}, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
                 if @getState() is 'hiding'
                     @$miniTip.hide()
+                    @callSettingFunction 'onHidden'
                     setState 'hidden'
             )
 
@@ -143,7 +147,7 @@ jQuery ->
             @$miniTip = $('<div />', {'class' : @getSetting('className'), 'css' : miniTipCss}).html(@$miniTipContent)
                                                                                               .appendTo('body')
 
-            # set the tooltip content
+            # set the miniTip content
             if @getSetting('contentType') is 'selector'
                 # the content type is selector
                 @setContent @$element.find(@getSetting 'contentSelector' ).html()
@@ -159,12 +163,12 @@ jQuery ->
             # update the position
             @updatePosition()
 
-            ($ window).resize(@updatePosition)
+            # update the miniTip position when window gets resized
+            ($ window).resize @updatePosition
 
-            # attach the mouseenter and mouseleave events to the element
+            # attach the hover events to the element
             @$element.hover((=>@show()), (=> @hide()))
-#            @$element.bind('mouseenter', => @show())
-#                     .bind('mouseleave', => @hide())
+        # end init function
 
         # initialise the plugin
         @init()

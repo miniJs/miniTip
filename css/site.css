@@ -1,15 +1,20 @@
 body {
-    font-family: 'Helvetica Neue',arial,helvetica,sans-serif;
+    font-family: 'Georgia',arial,helvetica,sans-serif;
     background-color: #fafbf1;
-    color: #494949;
+    color: #3C3C3C;
 }
 
 h1 {
     font-size: 24px;
     line-height: 48px;
-    font-weight: bold;
+    font-weight: 100;
     letter-spacing: 1px;
     border-bottom: 1px solid #3c3c3c;
+}
+
+h1 strong {
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 h2 {
@@ -32,19 +37,18 @@ h2 {
     padding:  5px 60px 5px 0;
 }
 
-
-
 #main .tip-content {
     display: none;
 }
 
-#main .tip {
-    margin: 20px 0 40px;
+#main p {
+    padding: 10px 0;
+    color: #D95D5B;
+    font-weight: 100;
 }
 
 
 #main .tip:hover {
-    color: #ED5C2D;
     cursor: pointer;
 }
 

@@ -31,6 +31,12 @@
       setState = function(_state) {
         return state = _state;
       };
+      this.getSetting = function(settingKey) {
+        return this.settings[settingKey];
+      };
+      this.callSettingFunction = function(functionName) {
+        return this.settings[functionName]();
+      };
       this.getState = function() {
         return state;
       };
@@ -65,20 +71,16 @@
       this.updatePosition = __bind(function() {
         return this.$miniTip.css(this.getPosition());
       }, this);
-      this.getSetting = function(settingKey) {
-        return this.settings[settingKey];
-      };
-      this.callSettingFunction = function(functionName) {
-        return this.settings[functionName]();
-      };
       this.show = function() {
         if (this.getState() === 'hidden' || this.getState === 'hiding') {
+          this.callSettingFunction('onLoad');
           setState('showing');
           return this.$miniTip.stop(true, true).css('opacity', 0).show().animate({
             'opacity': 1
           }, this.getSetting('showSpeed'), this.getSetting('showEasing'), __bind(function() {
             if (this.getState() === 'showing') {
               this.$miniTip.show();
+              this.callSettingFunction('onVisible');
               return setState('visible');
             }
           }, this));
@@ -86,12 +88,14 @@
       };
       this.hide = function() {
         if (this.getState() === 'visible' || this.getState() === 'showing') {
+          this.callSettingFunction('onHide');
           setState('hiding');
           return this.$miniTip.stop(true, true).animate({
             'opacity': 0
           }, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), __bind(function() {
             if (this.getState() === 'hiding') {
               this.$miniTip.hide();
+              this.callSettingFunction('onHidden');
               return setState('hidden');
             }
           }, this));
