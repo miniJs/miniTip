@@ -1,21 +1,58 @@
 .minitip {
     display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 99999;
-    font-size: 11px;
-	color: #fff;
-	text-shadow: 0 0 2px #000;
-	padding: 10px 13px;
-	border: 1px solid rgba(255,255,255,0.25);
-	background-color: rgb(25,25,25);
-	background-color: rgba(25,25,25,0.92);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(transparent), to(#000));
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	box-shadow: 0 0 3px #555;
-	-webkit-box-shadow: 0 0 3px #555;
-	-moz-box-shadow: 0 0 3px #555;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999;
 }
+
+.minitip-content {
+    font-size: 11px;
+    padding: 8px 10px;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+
+/* THEMES - feel free to customize them */
+
+/* black - default */
+.minitip-content {
+    text-shadow: 0 0 2px #000;
+    color: #fff;
+    background-color: #3C3C3C;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 3px #555;
+    -webkit-box-shadow: 0 0 3px #555;
+    -moz-box-shadow: 0 0 3px #555;
+}
+
+/* red */
+.green .minitip-content{
+    background-color: #A8D18B;
+    border: 1px solid rgba(67, 144, 102, 0.25);
+}
+
+/* blue */
+.blue .minitip-content{
+    background-color: #4FC6E0;
+    border: 1px solid rgba(79, 198, 224, 0.25);
+}
+
+/* blue */
+.red .minitip-content{
+    background-color: #F15A29;
+    border: 1px solid rgba(241, 90, 41, 0.25);
+}
+
+
+/* yellow */
+.yellow .minitip-content{
+    background-color: #FBF59D;
+    border: 1px solid rgba(251, 245, 157, 0.25);
+    color: #3C3C3C;
+    text-shadow: 0 0 2px #FFF;
+}
+

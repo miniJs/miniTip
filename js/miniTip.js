@@ -2,21 +2,21 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   jQuery(function() {
     $.miniTip = function(element, options) {
-      var content, setState, state;
+      var content, getArrowCss, hideAnimateProperties, setState, showAnimateProperties, state;
       this.defaults = {
-        position: 'bottom',
-        margin: 5,
+        position: 'top',
+        offset: 10,
+        opacity: 0.95,
         delay: 200,
         contentType: 'attribute',
         contentAttribute: 'title',
         contentSelector: '',
-        showSpeed: 400,
+        showSpeed: 350,
         hideSpeed: 250,
         showEasing: '',
         hideEasing: '',
-        css: {},
-        className: 'minitip',
-        contentClassName: 'minitip-content',
+        showArrow: true,
+        className: '',
         showAnimateProperties: {},
         hideAnimateProperties: {},
         onLoad: function() {},
@@ -26,11 +26,88 @@
       };
       state = 'hidden';
       content = '';
+      showAnimateProperties = {
+        'opacity': 1
+      };
+      hideAnimateProperties = {
+        'opacity': 0
+      };
       this.settings = {};
       this.$element = $(element);
       setState = function(_state) {
         return state = _state;
       };
+      getArrowCss = __bind(function() {
+        var arrowCss, position, _arrowCss, _borderColor, _left, _shadowBorderColor, _shadowCss;
+        arrowCss = {};
+        arrowCss['arrow'] = {
+          'position': 'absolute',
+          'height': 0,
+          'width': 0,
+          'border': '6px solid transparent'
+        };
+        position = this.getSetting('position');
+        _arrowCss = _shadowCss = {};
+        _shadowBorderColor = this.$miniTipContent.css('border-color');
+        _borderColor = this.$miniTipContent.css('background-color');
+        switch (position) {
+          case "left":
+            _arrowCss = {
+              'right': '-11px',
+              'top': '7px',
+              'border-left-color': _borderColor
+            };
+            _shadowCss = {
+              'right': '-14px',
+              'border-left-color': _shadowBorderColor,
+              'top': '6px'
+            };
+            break;
+          case "right":
+            _arrowCss = {
+              'left': '-11px',
+              'top': '7px',
+              'border-right-color': _borderColor
+            };
+            _shadowCss = {
+              'left': '-14px',
+              'border-right-color': _shadowBorderColor,
+              'top': '6px'
+            };
+            break;
+          case "bottom":
+            _left = this.$miniTip.outerWidth() < this.$element.outerWidth() ? Math.floor(this.$miniTip.outerWidth() / 5) : Math.floor(this.$element.outerWidth() / 5);
+            _arrowCss = {
+              'top': '-11px',
+              'left': _left + 'px',
+              'border-bottom-color': _borderColor
+            };
+            _shadowCss = {
+              'top': '-14px',
+              'border-bottom-color': _shadowBorderColor,
+              'left': (_left - 1) + 'px'
+            };
+            break;
+          default:
+            _left = this.$miniTip.outerWidth() < this.$element.outerWidth() ? Math.floor(this.$miniTip.outerWidth() / 5) : Math.floor(this.$element.outerWidth() / 5);
+            _arrowCss = {
+              'bottom': '-11px',
+              'left': _left + 'px',
+              'border-top-color': _borderColor
+            };
+            _shadowCss = {
+              'bottom': '-14px',
+              'border-top-color': _shadowBorderColor,
+              'left': (_left - 1) + 'px'
+            };
+        }
+        arrowCss['arrow'] = $.extend({}, arrowCss['arrow'], _arrowCss);
+        arrowCss['shadow'] = $.extend({}, arrowCss['arrow'], {
+          'border-width': '7px',
+          'opacity': '0.30'
+        }, _shadowCss);
+        return arrowCss;
+      }, this);
       this.getSetting = function(settingKey) {
         return this.settings[settingKey];
       };
@@ -47,24 +124,26 @@
         return content = _content;
       };
       this.updateMiniTipContent = function(content) {
-        return this.$miniTipContent.html(content);
+        return this.$miniTipContent.html($.trim(content));
       };
       this.getPosition = function() {
         var coordinates, position;
         position = this.getSetting('position');
         coordinates = this.$element.offset();
         switch (position) {
-          case "top":
-            coordinates['top'] = coordinates.top - this.$miniTip.outerHeight() - this.getSetting('margin');
+          case "bottom":
+            coordinates['top'] = coordinates.top + this.$element.outerHeight() + this.getSetting('offset');
             break;
           case "left":
-            coordinates['left'] = coordinates.left - this.$miniTip.outerWidth() - this.getSetting('margin');
+            coordinates['left'] = coordinates.left - this.$miniTip.outerWidth() - this.getSetting('offset');
+            coordinates['top'] = coordinates['top'] - 5;
             break;
           case "right":
-            coordinates['left'] = coordinates.left + this.$element.outerWidth() + this.getSetting('margin');
+            coordinates['left'] = coordinates.left + this.$element.outerWidth() + this.getSetting('offset');
+            coordinates['top'] = coordinates['top'] - 5;
             break;
           default:
-            coordinates['top'] = coordinates.top + this.$element.outerHeight() + this.getSetting('margin');
+            coordinates['top'] = coordinates.top - this.$miniTip.outerHeight() - this.getSetting('offset');
         }
         return coordinates;
       };
@@ -75,9 +154,7 @@
         if (this.getState() === 'hidden' || this.getState === 'hiding') {
           this.callSettingFunction('onLoad');
           setState('showing');
-          return this.$miniTip.stop(true, true).css('opacity', 0).show().animate({
-            'opacity': 1
-          }, this.getSetting('showSpeed'), this.getSetting('showEasing'), __bind(function() {
+          return this.$miniTip.stop(true, true).css('opacity', 0).show().animate(showAnimateProperties, this.getSetting('showSpeed'), this.getSetting('showEasing'), __bind(function() {
             if (this.getState() === 'showing') {
               this.$miniTip.show();
               this.callSettingFunction('onVisible');
@@ -90,9 +167,7 @@
         if (this.getState() === 'visible' || this.getState() === 'showing') {
           this.callSettingFunction('onHide');
           setState('hiding');
-          return this.$miniTip.stop(true, true).animate({
-            'opacity': 0
-          }, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), __bind(function() {
+          return this.$miniTip.stop(true, true).animate(hideAnimateProperties, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), __bind(function() {
             if (this.getState() === 'hiding') {
               this.$miniTip.hide();
               this.callSettingFunction('onHidden');
@@ -102,18 +177,26 @@
         }
       };
       this.init = function() {
-        var miniTipCss;
+        var $miniTipArrow, $miniTipArrowShadow, arrowCss, _hover;
         this.settings = $.extend({}, this.defaults, options);
-        miniTipCss = $.extend({}, {
-          'opacity': 1
-        }, this.getSetting('css'));
         this.$miniTipContent = $('<div />', {
-          'class': this.getSetting('contentClassName')
+          'class': 'minitip-content'
         });
         this.$miniTip = $('<div />', {
-          'class': this.getSetting('className'),
-          'css': miniTipCss
+          'class': 'minitip ' + this.getSetting('className'),
+          'css': {
+            'opacity': 1
+          }
         }).html(this.$miniTipContent).appendTo('body');
+        if (this.getSetting('showArrow')) {
+          $miniTipArrow = $('<span />', {
+            'class': 'minitip-arrow'
+          });
+          $miniTipArrowShadow = $('<span />', {
+            'class': 'minitip-arrow-shadow'
+          });
+          this.$miniTip.append($miniTipArrowShadow).append($miniTipArrow);
+        }
         if (this.getSetting('contentType') === 'selector') {
           this.setContent(this.$element.find(this.getSetting('contentSelector')).html());
         } else {
@@ -125,11 +208,23 @@
         } else {
           this.updateMiniTipContent(this.getContent());
         }
+        arrowCss = getArrowCss();
+        $miniTipArrow.css(arrowCss['arrow']);
+        $miniTipArrowShadow.css(arrowCss['shadow']);
         this.updatePosition();
         ($(window)).resize(this.updatePosition);
+        showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));
+        hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
+        _hover = false;
         return this.$element.hover((__bind(function() {
-          return this.show();
+          _hover = true;
+          return setTimeout(__bind(function() {
+            if (_hover) {
+              return this.show();
+            }
+          }, this), this.getSetting('delay'));
         }, this)), (__bind(function() {
+          _hover = false;
           return this.hide();
         }, this)));
       };

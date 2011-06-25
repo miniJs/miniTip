@@ -2,30 +2,31 @@
 # miniTip, the tooltip plugin for jQuery
 # Instructions: Coming Soon
 # By: Matthieu Aussaguel, http://www.mynameismatthieu.com
-# Version: 0.1
-# Updated: June 13th, 2011
+# Version: 1.0 Alpha 1.0
+# Updated: June 25th, 2011
 #
 
 jQuery ->
     $.miniTip = (element, options) ->
         # default plugin settings
         @defaults = {
-          position              : 'bottom'          # 'bottom' | 'top' | 'left' | 'right'
-          margin                : 5                 # margin to the element
+          position              : 'top'             # 'bottom' | 'top' | 'left' | 'right'
+          offset                : 10                # margin to the element
+          opacity               : 0.95              # miniTip opacity
           delay                 : 200               # delay time before the miniTip appears
 
           contentType           : 'attribute'       # 'attribute' | 'selector'
           contentAttribute      : 'title'           # attribute name if content type 'attribute' i.e: 'data-miniTip'
           contentSelector       : ''                # selector if content type is 'selector' i.e: '.mini-tip'
 
-          showSpeed             : 400               # number, animation showing speed in milliseconds
+          showSpeed             : 350               # number, animation showing speed in milliseconds
           hideSpeed             : 250               # number, animation hiding speed in milliseconds
           showEasing            : ''                # easing equation on show
           hideEasing            : ''                # easing equation on hide
 
-          css                   : {}                # miniTip additional css properties
-          className             : 'minitip'         # generated miniTip className
-          contentClassName      : 'minitip-content' # generated miniTip content className
+          showArrow             : true              # show arrow
+
+          className             : ''                # miniTip className - useful for to apply themes
           showAnimateProperties : {}                # animate properties on show, will fadeIn by default
           hideAnimateProperties : {}                # animate properties on hde, will fadeOut by default
 
@@ -42,6 +43,12 @@ jQuery ->
         # miniTip title
         content = ''
 
+        # show animate properties
+        showAnimateProperties = { 'opacity':1 }
+
+        # hide animate properties
+        hideAnimateProperties = { 'opacity':0 }
+
         ## public variables
         # plugin settings
         @settings = {}
@@ -53,6 +60,42 @@ jQuery ->
         # set the current state
         setState = (_state) ->
           state = _state
+
+        # get the arrow Css
+        getArrowCss = =>
+          arrowCss = {}
+          arrowCss['arrow'] = { 'position': 'absolute', 'height' : 0, 'width'  : 0, 'border' : '6px solid transparent' }
+          
+          #element position
+          position = @getSetting 'position'
+
+          # init the css properties objects for manipulation
+          _arrowCss = _shadowCss = {}
+          _shadowBorderColor = @$miniTipContent.css('border-color')
+          _borderColor = @$miniTipContent.css('background-color')
+
+          # calulate the css properties depending on the position
+          switch position
+            when "left"
+                _arrowCss = { 'right' : '-11px', 'top'   : '7px', 'border-left-color' : _borderColor }
+                _shadowCss = { 'right' : '-14px', 'border-left-color' : _shadowBorderColor, 'top': '6px' }
+            when "right"
+                _arrowCss = { 'left' : '-11px', 'top'   : '7px', 'border-right-color' : _borderColor }
+                _shadowCss = { 'left' : '-14px', 'border-right-color' : _shadowBorderColor, 'top': '6px' }
+            when "bottom"
+                _left = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
+                _arrowCss = { 'top' : '-11px', 'left'   : _left + 'px', 'border-bottom-color' : _borderColor }
+                _shadowCss = { 'top' : '-14px', 'border-bottom-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
+            else
+                _left = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
+                _arrowCss = { 'bottom' : '-11px', 'left'   : _left + 'px', 'border-top-color' : _borderColor }
+                _shadowCss = { 'bottom' : '-14px', 'border-top-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
+
+          # merge ojects
+          arrowCss['arrow']  = $.extend {}, arrowCss['arrow'], _arrowCss
+          arrowCss['shadow'] = $.extend {}, arrowCss['arrow'], {'border-width':'7px', 'opacity': '0.30'}, _shadowCss
+          arrowCss
+
 
         ## public methods
         # get particular plugin setting
@@ -77,7 +120,7 @@ jQuery ->
 
         # update miniTip content
         @updateMiniTipContent = (content) ->
-            @$miniTipContent.html(content)
+            @$miniTipContent.html($.trim(content))
 
         # get miniTip coordinates
         @getPosition = ->
@@ -89,14 +132,16 @@ jQuery ->
 
             # calculate the miniTip position
             switch position
-                when "top"
-                    coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('margin')
+                when "bottom"
+                    coordinates['top'] = coordinates.top + @$element.outerHeight() + @getSetting('offset')
                 when "left"
-                    coordinates['left'] = coordinates.left - @$miniTip.outerWidth() - @getSetting('margin')
+                    coordinates['left'] = coordinates.left - @$miniTip.outerWidth() - @getSetting('offset')
+                    coordinates['top'] = coordinates['top'] - 5
                 when "right"
-                    coordinates['left'] = coordinates.left  + @$element.outerWidth() + @getSetting('margin')
+                    coordinates['left'] = coordinates.left  + @$element.outerWidth() + @getSetting('offset')
+                    coordinates['top'] = coordinates['top'] - 5
                 else
-                    coordinates['top'] = coordinates.top + @$element.outerHeight() + @getSetting('margin')
+                    coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('offset')
 
             # returns the calculated coordinates
             coordinates
@@ -113,7 +158,7 @@ jQuery ->
             @$miniTip.stop(true, true)
                      .css('opacity', 0)
                      .show()
-                     .animate({'opacity': 1}, @getSetting('showSpeed'), @getSetting('showEasing'), =>
+                     .animate(showAnimateProperties, @getSetting('showSpeed'), @getSetting('showEasing'), =>
                 if @getState() is 'showing'
                     @$miniTip.show()
                     @callSettingFunction 'onVisible'
@@ -127,7 +172,7 @@ jQuery ->
             @callSettingFunction 'onHide'
             setState 'hiding'
             @$miniTip.stop(true, true)
-                     .animate({'opacity': 0}, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
+                     .animate(hideAnimateProperties, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
                 if @getState() is 'hiding'
                     @$miniTip.hide()
                     @callSettingFunction 'onHidden'
@@ -139,13 +184,16 @@ jQuery ->
             # merge options and default settings
             @settings = $.extend {}, @defaults, options
 
-            # merge css properties
-            miniTipCss = $.extend {}, {'opacity' : 1}, @getSetting('css')
-
             # generate the miniTip HTML and append to the body
-            @$miniTipContent =  $('<div />', {'class': @getSetting('contentClassName')})
-            @$miniTip = $('<div />', {'class' : @getSetting('className'), 'css' : miniTipCss}).html(@$miniTipContent)
-                                                                                              .appendTo('body')
+            @$miniTipContent =  $('<div />', {'class': 'minitip-content'})
+            @$miniTip = $('<div />', {'class' : 'minitip ' + @getSetting('className'), 'css' : {'opacity' : 1}}).html(@$miniTipContent)
+                                                                                                                .appendTo('body')
+            # add arrow to the tooltip
+            if @getSetting 'showArrow'
+               $miniTipArrow = $('<span />', {'class': 'minitip-arrow'})
+               $miniTipArrowShadow = $('<span />', {'class': 'minitip-arrow-shadow'})
+               @$miniTip.append($miniTipArrowShadow)
+                        .append($miniTipArrow)
 
             # set the miniTip content
             if @getSetting('contentType') is 'selector'
@@ -160,14 +208,35 @@ jQuery ->
             # if the content is empty, we stop processing else we populate the miniTip
             if not @getContent()? then return false else @updateMiniTipContent @getContent()
 
+            # update the arrow css
+            arrowCss = getArrowCss()
+            $miniTipArrow.css(arrowCss['arrow'])
+            $miniTipArrowShadow.css(arrowCss['shadow'])
+
             # update the position
             @updatePosition()
 
-            # update the miniTip position when window gets resized
+            # update the miniTip position when window gets re sized
             ($ window).resize @updatePosition
 
+            # set animate properties
+            showAnimateProperties = $.extend showAnimateProperties, @getSetting('showAnimateProperties')
+            hideAnimateProperties = $.extend hideAnimateProperties, @getSetting('hideAnimateProperties')
+
+            # keep trak of the hover state
+            _hover = false
+
             # attach the hover events to the element
-            @$element.hover((=>@show()), (=> @hide()))
+            @$element.hover((=>
+                _hover = true
+                setTimeout(=>
+                    @show() if _hover
+                , @getSetting 'delay')
+            ), (=>
+                _hover = false
+                @hide()
+            ))
+            
         # end init function
 
         # initialise the plugin
