@@ -22,8 +22,8 @@ jQuery ->
 
           showSpeed             : 350               # number, animation showing speed in milliseconds
           hideSpeed             : 250               # number, animation hiding speed in milliseconds
-          showEasing            : ''                # easing equation on show
-          hideEasing            : ''                # easing equation on hide
+          showEasing            : ''                # easing equation on show, must load http:#gsgd.co.uk/sandbox/jquery/easing/
+          hideEasing            : ''                # easing equation on hide, must load http:#gsgd.co.uk/sandbox/jquery/easing/
 
           showArrow             : true              # show arrow
 
@@ -43,6 +43,16 @@ jQuery ->
 
         # miniTip title
         content = ''
+
+        # miniTip default css
+        miniTipCss = {
+            'display' : 'none'
+            'position': 'absolute'
+            'top'     : 0
+            'left'    : 0
+            'z-index' : 99999
+            'opacity' : 1
+        }
 
         # show animate properties
         showAnimateProperties = { 'opacity':1 }
@@ -187,7 +197,7 @@ jQuery ->
 
             # generate the miniTip HTML and append to the body
             @$miniTipContent =  $('<div />', {'class': 'minitip-content'})
-            @$miniTip = $('<div />', {'class' : 'minitip ' + @getSetting('className'), 'css' : {'opacity' : 1}}).html(@$miniTipContent)
+            @$miniTip = $('<div />', {'class' : 'minitip ' + @getSetting('className'), 'css' : miniTipCss}).html(@$miniTipContent)
                                                                                                                 .appendTo('body')
             # add arrow to the tooltip
             if @getSetting 'showArrow'

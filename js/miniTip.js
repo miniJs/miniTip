@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   jQuery(function() {
     $.miniTip = function(element, options) {
-      var content, getArrowCss, hideAnimateProperties, setState, showAnimateProperties, state;
+      var content, getArrowCss, hideAnimateProperties, miniTipCss, setState, showAnimateProperties, state;
       this.defaults = {
         position: 'top',
         event: 'hover',
@@ -27,6 +27,14 @@
       };
       state = 'hidden';
       content = '';
+      miniTipCss = {
+        'display': 'none',
+        'position': 'absolute',
+        'top': 0,
+        'left': 0,
+        'z-index': 99999,
+        'opacity': 1
+      };
       showAnimateProperties = {
         'opacity': 1
       };
@@ -185,9 +193,7 @@
         });
         this.$miniTip = $('<div />', {
           'class': 'minitip ' + this.getSetting('className'),
-          'css': {
-            'opacity': 1
-          }
+          'css': miniTipCss
         }).html(this.$miniTipContent).appendTo('body');
         if (this.getSetting('showArrow')) {
           $miniTipArrow = $('<span />', {
