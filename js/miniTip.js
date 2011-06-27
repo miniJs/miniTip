@@ -5,6 +5,7 @@
       var content, getArrowCss, hideAnimateProperties, setState, showAnimateProperties, state;
       this.defaults = {
         position: 'top',
+        event: 'hover',
         offset: 10,
         opacity: 0.95,
         delay: 200,
@@ -112,7 +113,7 @@
         return this.settings[settingKey];
       };
       this.callSettingFunction = function(functionName) {
-        return this.settings[functionName]();
+        return this.settings[functionName](element, this.$miniTip[0]);
       };
       this.getState = function() {
         return state;
@@ -204,7 +205,7 @@
           this.$element.attr(this.getSetting('contentAttribute'), '');
         }
         if (!(this.getContent() != null)) {
-          return false;
+          return this(false);
         } else {
           this.updateMiniTipContent(this.getContent());
         }
@@ -215,18 +216,27 @@
         ($(window)).resize(this.updatePosition);
         showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));
         hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
-        _hover = false;
-        return this.$element.hover((__bind(function() {
-          _hover = true;
-          return setTimeout(__bind(function() {
-            if (_hover) {
-              return this.show();
-            }
-          }, this), this.getSetting('delay'));
-        }, this)), (__bind(function() {
+        if (this.getSetting('event') === 'hover') {
           _hover = false;
-          return this.hide();
-        }, this)));
+          return this.$element.hover((__bind(function() {
+            _hover = true;
+            return setTimeout(__bind(function() {
+              if (_hover) {
+                return this.show();
+              }
+            }, this), this.getSetting('delay'));
+          }, this)), (__bind(function() {
+            _hover = false;
+            return this.hide();
+          }, this)));
+        } else {
+          return this.$element.bind('click', __bind(function() {
+            this.show();
+            return setTimeout(__bind(function() {
+              return this.hide();
+            }, this), this.getSetting('delay'));
+          }, this));
+        }
       };
       return this.init();
     };

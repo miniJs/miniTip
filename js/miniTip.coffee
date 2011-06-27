@@ -11,6 +11,7 @@ jQuery ->
         # default plugin settings
         @defaults = {
           position              : 'top'             # 'bottom' | 'top' | 'left' | 'right'
+          event                 : 'hover'           # 'hover' | 'click'
           offset                : 10                # margin to the element
           opacity               : 0.95              # miniTip opacity
           delay                 : 200               # delay time before the miniTip appears
@@ -30,10 +31,10 @@ jQuery ->
           showAnimateProperties : {}                # animate properties on show, will fadeIn by default
           hideAnimateProperties : {}                # animate properties on hde, will fadeOut by default
 
-          onLoad                : ->                # Function, called when the miniTip is being loaded
-          onVisible             : ->                # Function, called when the miniTip is loaded
-          onHide                : ->                # Function, called when miniTip is hiding
-          onHidden              : ->                # Function, called when miniTip is hidden
+          onLoad                : ->                # Function(element, minitip), called when the miniTip is being loaded,
+          onVisible             : ->                # Function(element, minitip), called when the miniTip is loaded
+          onHide                : ->                # Function(element, minitip), called when miniTip is hiding
+          onHidden              : ->                # Function(element, minitip), called when miniTip is hidden
         }
 
         ## private variables
@@ -104,7 +105,7 @@ jQuery ->
 
         # call one of the plugin setting functions
         @callSettingFunction = (functionName) ->
-          @settings[functionName]()
+          @settings[functionName](element, @$miniTip[0])
 
         # get current state
         @getState = ->
@@ -206,7 +207,7 @@ jQuery ->
                 @$element.attr @getSetting('contentAttribute'), ''
 
             # if the content is empty, we stop processing else we populate the miniTip
-            if not @getContent()? then return false else @updateMiniTipContent @getContent()
+            if not @getContent()? then return this false else @updateMiniTipContent @getContent()
 
             # update the arrow css
             arrowCss = getArrowCss()
@@ -223,20 +224,29 @@ jQuery ->
             showAnimateProperties = $.extend showAnimateProperties, @getSetting('showAnimateProperties')
             hideAnimateProperties = $.extend hideAnimateProperties, @getSetting('hideAnimateProperties')
 
-            # keep trak of the hover state
-            _hover = false
-
-            # attach the hover events to the element
-            @$element.hover((=>
-                _hover = true
-                setTimeout(=>
-                    @show() if _hover
-                , @getSetting 'delay')
-            ), (=>
+            if @getSetting('event') is 'hover'
+                # on hover
+                # keep track of the hover state
                 _hover = false
-                @hide()
-            ))
-            
+
+                # attach the hover events to the element
+                @$element.hover((=>
+                    _hover = true
+                    setTimeout(=>
+                        @show() if _hover
+                    , @getSetting 'delay')
+                ), (=>
+                    _hover = false
+                    @hide()
+                ))
+            else
+                # on click
+                @$element.bind('click', =>
+                    @show()
+                    setTimeout(=>
+                        @hide()
+                    , @getSetting 'delay')
+                )
         # end init function
 
         # initialise the plugin
