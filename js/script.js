@@ -1,9 +1,9 @@
 $(function() {
-  // miniTip Example 1 - default
-  $('#tooltip-example-1 .tip').miniTip();
+  // miniTip example 1 - default
+  $('#example-1 .tip').miniTip();
 
-  // miniTip Example 1 - custom attribute
-  $('#tooltip-example-2 .tip').miniTip({'contentAttribute'      : 'data-tip',
+  // miniTip 2 - custom attribute
+  $('#example-2 .tip').miniTip({'contentAttribute'      : 'data-tip',
                                         'className'             : 'green',
                                         'offset'                : 20,
                                         'showAnimateProperties' : {'top': '-=10'},
@@ -18,8 +18,8 @@ $(function() {
                                         }
   });
 
-  // miniTip Example 1 - custom selector
-  $('#tooltip-example-3 .tip').miniTip({'event'             : 'click',
+  // miniTip example 3 - custom selector
+  $('#example-3 .tip').miniTip({'event'             : 'click',
                                         'delay'             : '3000',
                                         'contentType'       : 'selector',
                                         'contentSelector'   : '.tip-content',

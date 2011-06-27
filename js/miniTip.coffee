@@ -15,7 +15,8 @@ jQuery ->
           offset                : 10                # margin to the element
           opacity               : 0.95              # miniTip opacity
           delay                 : 200               # delay time before the miniTip appears
-
+          showArrow             : true              # show arrow
+          
           contentType           : 'attribute'       # 'attribute' | 'selector'
           contentAttribute      : 'title'           # attribute name if content type 'attribute' i.e: 'data-miniTip'
           contentSelector       : ''                # selector if content type is 'selector' i.e: '.mini-tip'
@@ -24,8 +25,6 @@ jQuery ->
           hideSpeed             : 250               # number, animation hiding speed in milliseconds
           showEasing            : ''                # easing equation on show, must load http:#gsgd.co.uk/sandbox/jquery/easing/
           hideEasing            : ''                # easing equation on hide, must load http:#gsgd.co.uk/sandbox/jquery/easing/
-
-          showArrow             : true              # show arrow
 
           className             : ''                # miniTip className - useful for to apply themes
           showAnimateProperties : {}                # animate properties on show, will fadeIn by default
