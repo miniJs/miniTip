@@ -1,7 +1,7 @@
 #
 # miniTip, the tooltip plugin for jQuery
 # Instructions: Coming Soon
-# By: Matthieu Aussaguel, http://www.mynameismatthieu.com
+# By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
 # Version: 1.0 Alpha 1.0
 # Updated: June 25th, 2011
 #
