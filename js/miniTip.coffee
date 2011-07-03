@@ -232,7 +232,7 @@ jQuery ->
             # set animate properties
             showAnimateProperties = $.extend showAnimateProperties, @getSetting('showAnimateProperties')
             hideAnimateProperties = $.extend hideAnimateProperties, @getSetting('hideAnimateProperties')
-
+            
             if @getSetting('event') is 'hover'
                 # on hover
                 # keep track of the hover state
@@ -241,6 +241,7 @@ jQuery ->
                 # attach the hover events to the element
                 @$element.hover((=>
                     _hover = true
+
                     setTimeout(=>
                         @show() if _hover
                     , @getSetting 'delay')

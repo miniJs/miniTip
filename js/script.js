@@ -10,11 +10,12 @@ $(function() {
                                         'hideAnimateProperties' : {'top': '+=10'},
                                         'position'              : 'bottom',
                                         'onLoad'                : function(element, minitip) {
-                                            $(element).animate({'color':'#3C3C3C', 'opacity': 0.35}, '350');
+                                            $(element).animate({'opacity': 0.35}, '350');
 
                                         },
                                         'onHide'                : function(element, minitip) {
                                             $(element).animate({'opacity': 1}, '250');
+
                                         }
   });
 
