@@ -10,30 +10,30 @@ jQuery ->
     $.miniTip = (element, options) ->
         # default plugin settings
         @defaults = {
-          position              : 'top'             # 'bottom' | 'top' | 'left' | 'right'
-          event                 : 'hover'           # 'hover' | 'click'
-          offset                : 10                # margin to the element
-          opacity               : 0.95              # miniTip opacity
-          delay                 : 200               # delay time before the miniTip appears
-          showArrow             : true              # show arrow
+          position:              'top'             # 'bottom' | 'top' | 'left' | 'right'
+          event:                 'hover'           # 'hover' | 'click'
+          offset:                10                # margin to the element
+          opacity:               0.95              # miniTip opacity
+          delay:                 200               # delay time before the miniTip appears
+          showArrow:             true              # show arrow
           
-          contentType           : 'attribute'       # 'attribute' | 'selector'
-          contentAttribute      : 'title'           # attribute name if content type 'attribute' i.e: 'data-miniTip'
-          contentSelector       : ''                # selector if content type is 'selector' i.e: '.mini-tip'
+          contentType:           'attribute'       # 'attribute' | 'selector'
+          contentAttribute:      'title'           # attribute name if content type 'attribute' i.e: 'data-miniTip'
+          contentSelector:       ''                # selector if content type is 'selector' i.e: '.mini-tip'
 
-          showSpeed             : 350               # number, animation showing speed in milliseconds
-          hideSpeed             : 250               # number, animation hiding speed in milliseconds
-          showEasing            : ''                # easing equation on show, must load http:#gsgd.co.uk/sandbox/jquery/easing/
-          hideEasing            : ''                # easing equation on hide, must load http:#gsgd.co.uk/sandbox/jquery/easing/
+          showSpeed:             350               # number, animation showing speed in milliseconds
+          hideSpeed:             250               # number, animation hiding speed in milliseconds
+          showEasing:            ''                # easing equation on show, must load http:#gsgd.co.uk/sandbox/jquery/easing/
+          hideEasing:            ''                # easing equation on hide, must load http:#gsgd.co.uk/sandbox/jquery/easing/
 
-          className             : ''                # miniTip className - useful for to apply themes
-          showAnimateProperties : {}                # animate properties on show, will fadeIn by default
-          hideAnimateProperties : {}                # animate properties on hde, will fadeOut by default
+          className:              ''                # miniTip className - useful for to apply themes
+          showAnimateProperties:  {}                # animate properties on show, will fadeIn by default
+          hideAnimateProperties:  {}                # animate properties on hde, will fadeOut by default
 
-          onLoad                : ->                # Function(element, minitip), called when the miniTip is being loaded,
-          onVisible             : ->                # Function(element, minitip), called when the miniTip is loaded
-          onHide                : ->                # Function(element, minitip), called when miniTip is hiding
-          onHidden              : ->                # Function(element, minitip), called when miniTip is hidden
+          onLoad:                 ->                # Function(element, minitip), called when the miniTip is being loaded,
+          onVisible:              ->                # Function(element, minitip), called when the miniTip is loaded
+          onHide:                 ->                # Function(element, minitip), called when miniTip is hiding
+          onHidden:               ->                # Function(element, minitip), called when miniTip is hidden
         }
 
         ## private variables
@@ -45,19 +45,19 @@ jQuery ->
 
         # miniTip default css
         miniTipCss = {
-            'display' : 'none'
+            'display':  'none'
             'position': 'absolute'
-            'top'     : 0
-            'left'    : 0
-            'z-index' : 99999
-            'opacity' : 1
+            'top':      0
+            'left':     0
+            'z-index':  99999
+            'opacity':  1
         }
 
         # show animate properties
-        showAnimateProperties = { 'opacity':1 }
+        showAnimateProperties = { 'opacity': 1 }
 
         # hide animate properties
-        hideAnimateProperties = { 'opacity':0 }
+        hideAnimateProperties = { 'opacity': 0 }
 
         ## public variables
         # plugin settings
