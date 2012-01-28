@@ -2,112 +2,142 @@
 
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>miniTip - jQuery Plugin</title>
-    <link rel="stylesheet" href="css/minitip.css">
-    <link rel="stylesheet" href="css/site.css">
-    <!--[if IE]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  <meta charset="utf-8">
+  <title>miniTip - jQuery Plugin</title>
+  <link rel="stylesheet" href="css/minitip.css">
+  <link rel="stylesheet" href="css/site.css">
+  <!--[if IE]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 </head>
 
 <body>
 
 <div id="container">
-    <header>
-    </header>
+  <header>
+  </header>
 
-    <div id="main">
-        <h1><strong>miniTip demo</strong> - jQuery Plugin</h1>
+  <div id="main">
+    <h1><strong>miniTip demo</strong> - jQuery Plugin</h1>
 
-        <div id="main-inner" class="clearfix">
-            <section id="example-1">
-                <h2>Example 1 - default</h2>
+    <div id="main-inner" class="clearfix">
+      <section id="example-1">
+          <h2>Example 1 - default</h2>
 
-                <p>
-                  <span class="tip" title="Neque porro quisquam">
-                    hover me
-                   </span>
-                </p>
+          <p>
+            <span class="tip" title="Neque porro quisquam">
+              hover me
+             </span>
+          </p>
 
-                <p>
-                  <span class="tip" title="Neque porro quisquam est qui dolorem ipsum quia">
-                    hover me
-                   </span>
-                </p>
+          <p>
+            <span class="tip" title="Neque porro quisquam est qui dolorem ipsum quia">
+              hover me
+             </span>
+          </p>
 
-                <p>
-                  <span class="tip" title="Neque porro quisquam est qui dolorem ipsum quia">
-                    hover me
-                  </span>
-                </p>
-            </section>
+          <p>
+            <span class="tip" title="Neque porro quisquam est qui dolorem ipsum quia">
+              hover me
+            </span>
+          </p>
+      </section>
 
-            <section id="example-2">
-                <h2>Example 2 - custom attribute</h2>
+      <section id="example-2">
+          <h2>Example 2 - custom attribute</h2>
 
-                <p>
-                   <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
-                        hover me
-                   </span>
-                </p>
+          <p>
+             <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
+                  hover me
+             </span>
+          </p>
 
-                <p>
-                   <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
-                        hover me
-                   </span>
-                </p>
+          <p>
+             <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
+                  hover me
+             </span>
+          </p>
 
-                <p>
-                   <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
-                        hover me
-                   </span>
-                </p>
-            </section>
+          <p>
+             <span class="tip" data-tip="Neque porro quisquam est qui dolorem ipsum quia">
+                  hover me
+             </span>
+          </p>
+      </section>
 
-            <section id="example-3">
-                <h2>Example 3 - custom selector</h2>
+      <section id="example-3">
+        <h2>Example 3 - custom selector</h2>
 
-                <p>
-                    <span class="tip">
-                        click me
-                        <span class="tip-content">
-                            "Neque porro quisquam est qui dolorem ipsum" <br/>
-                            "Neque porro quisquam est qui dolorem ipsum" <br/>
-                            "Neque porro quisquam est qui dolorem ipsum"
-                        </span>
-                    </span>
-                </p>
+        <p>
+            <span class="tip">
+                click me
+                <span class="tip-content">
+                    "Neque porro quisquam est qui dolorem ipsum" <br/>
+                    "Neque porro quisquam est qui dolorem ipsum" <br/>
+                    "Neque porro quisquam est qui dolorem ipsum"
+                </span>
+            </span>
+        </p>
 
-                <p>
-                    <span class="tip">
-                        click me
-                        <span class="tip-content">
-                            "Neque porro quisquam est qui dolorem ipsum"
-                        </span>
-                    </span>
-                </p>
+        <p>
+          <span class="tip">
+              click me
+              <span class="tip-content">
+                  "Neque porro quisquam est qui dolorem ipsum"
+              </span>
+          </span>
+        </p>
 
 
-                <p>
-                    <span class="tip">
-                        click me
-                        <span class="tip-content">
-                            "Neque porro quisquam est qui dolorem ipsum"
-                        </span>
-                    </span>
-                </p>
-            </section>
-        </div>
+        <p>
+          <span class="tip">
+              click me
+              <span class="tip-content">
+                  "Neque porro quisquam est qui dolorem ipsum"
+              </span>
+          </span>
+        </p>
+      </section>
     </div>
+  </div>
 
-    <footer>
-    </footer>
+  <footer>
+  </footer>
 </div>
 <!-- end of #container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
 <script src="js/miniTip.jquery.js"></script>
-<script src="js/script.js"></script>
+<script>
+  $(function() {
+  // miniTip example 1 - default
+  $('#example-1 .tip').miniTip();
+
+  // miniTip 2 - custom attribute
+  $('#example-2 .tip').miniTip({'contentAttribute'      : 'data-tip',
+                                        'className'             : 'green',
+                                        'offset'                : 20,
+                                        'showAnimateProperties' : {'top': '-=10'},
+                                        'hideAnimateProperties' : {'top': '+=10'},
+                                        'position'              : 'bottom',
+                                        'onLoad'                : function(element, minitip) {
+                                            $(element).animate({'opacity': 0.35}, '350');
+
+                                        },
+                                        'onHide'                : function(element, minitip) {
+                                            $(element).animate({'opacity': 1}, '250');
+
+                                        }
+  });
+
+  // miniTip example 3 - custom selector
+  $('#example-3 .tip').miniTip({'event'             : 'click',
+                                        'delay'             : '3000',
+                                        'contentType'       : 'selector',
+                                        'contentSelector'   : '.tip-content',
+                                        'position'          : 'left',
+                                        'className'         : 'yellow'});
+  });
+</script>
 
 </body>
 </html>
