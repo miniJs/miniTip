@@ -1,9 +1,10 @@
 #
 # miniTip, the tooltip plugin for jQuery
-# Instructions: Coming Soon
+# Instructions: http://minijs.com/plugins/6/tip
 # By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @mattaussaguel
-# Version: 1.0 Alpha 1.0
-# Updated: June 25th, 2011
+# Version: 0.1 Beta
+# Updated: April 16, 2012
+# More info: http://minijs.com/
 #
 
 jQuery ->
@@ -13,8 +14,8 @@ jQuery ->
           position:              'top'             # 'bottom' | 'top' | 'left' | 'right'
           event:                 'hover'           # 'hover' | 'click'
           offset:                10                # margin to the element
-          opacity:               0.95              # miniTip opacity
-          delay:                 200               # delay time before the miniTip appears
+          opacity:               0.95              # tooltip opacity
+          delay:                 200               # time before the tooltip appears on hover event - how long it stays visible for on click event.
           showArrow:             true              # show arrow
           
           contentType:           'attribute'       # 'attribute' | 'selector'
@@ -219,9 +220,10 @@ jQuery ->
             if not @getContent()? then return this false else @updateMiniTipContent @getContent()
 
             # update the arrow css
-            arrowCss = getArrowCss()
-            $miniTipArrow.css(arrowCss['arrow'])
-            $miniTipArrowShadow.css(arrowCss['shadow'])
+            if $miniTipArrow?
+              arrowCss = getArrowCss()
+              $miniTipArrow.css(arrowCss['arrow'])
+              $miniTipArrowShadow.css(arrowCss['shadow'])
 
             # update the position
             @updatePosition()

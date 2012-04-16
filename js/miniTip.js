@@ -220,9 +220,11 @@
         } else {
           this.updateMiniTipContent(this.getContent());
         }
-        arrowCss = getArrowCss();
-        $miniTipArrow.css(arrowCss['arrow']);
-        $miniTipArrowShadow.css(arrowCss['shadow']);
+        if ($miniTipArrow != null) {
+          arrowCss = getArrowCss();
+          $miniTipArrow.css(arrowCss['arrow']);
+          $miniTipArrowShadow.css(arrowCss['shadow']);
+        }
         this.updatePosition();
         ($(window)).resize(this.updatePosition);
         showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));

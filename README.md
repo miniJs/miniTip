@@ -4,10 +4,15 @@ miniTip jQuery plugin
 
 miniTip is very basic but powerful tooltip jQuery plugin that allows you to show tooltips on a page at any time and it just Works!
 
+### Version
+-----------
+
+0.1 Beta
+
 ### Website Url
 ---------------
 
-Coming soon.
+http://minijs.com/plugins/6/tip
 
 ### Bug tracker
 ---------------
