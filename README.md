@@ -1,36 +1,34 @@
 
-miniTip jQuery plugin
-=======================
+# miniTip jQuery plugin
 
-miniTip is very basic but powerful tooltip jQuery plugin that allows you to show tooltips on a page at any time and it just Works!
+miniTip is very basic but powerful tooltip jQuery plugin that allows you to show tooltips on a page at any time and it just works!
 
-### Website Url
----------------
+## Version
 
-Coming soon.
+v1.0 stable
 
-### Bug tracker
----------------
+## Website Url
+
+http://minijs.com/plugins/6/tip
+
+## Bug tracker
 
 If you find a bug, please raise it the issue here on Github! 
 
 https://github.com/miniJs/miniTip/issues
 
-### Developer
--------------
+## Developer
 
-Developed by <a href="mailto:matthieu.aussaguel@gmail">Matthieu Aussaguel</a>, <a href="http://mynameismatthieu.com">mynameismatthieu.com</a>
+Developed by [Matthieu Aussaguel](mailto:matthieu.aussaguel@gmail), [mynameismatthieu.com](http://mynameismatthieu.com)
 
 + http://twitter.com/mattaussaguel
 + http://github.com/matthieua
 
-### To Do
----------
+## To Do
 
-* Add test coverage using jasmine.js
+* Add test coverage
 
-### Licence
------------
+## Licence
 
 Copyright &copy; 2012 Matthieu Aussaguel
 
