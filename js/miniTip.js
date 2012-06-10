@@ -220,10 +220,11 @@
         } else {
           this.updateMiniTipContent(this.getContent());
         }
-        arrowCss = getArrowCss();
-        $miniTipArrow.css(arrowCss['arrow']);
-        $miniTipArrowShadow.css(arrowCss['shadow']);
-        this.updatePosition();
+        if (this.getSetting('showArrow')) {
+          arrowCss = getArrowCss();
+          $miniTipArrow.css(arrowCss['arrow']);
+          $miniTipArrowShadow.css(arrowCss['shadow']);
+        }
         ($(window)).resize(this.updatePosition);
         showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));
         hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
@@ -231,6 +232,7 @@
           _hover = false;
           return this.$element.hover((function() {
             _hover = true;
+            _this.updatePosition();
             return setTimeout(function() {
               if (_hover) {
                 return _this.show();
@@ -242,6 +244,7 @@
           }));
         } else {
           return this.$element.bind('click', function() {
+            _this.updatePosition();
             _this.show();
             return setTimeout(function() {
               return _this.hide();

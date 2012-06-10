@@ -219,12 +219,10 @@ jQuery ->
             if not @getContent()? then return this false else @updateMiniTipContent @getContent()
 
             # update the arrow css
-            arrowCss = getArrowCss()
-            $miniTipArrow.css(arrowCss['arrow'])
-            $miniTipArrowShadow.css(arrowCss['shadow'])
-
-            # update the position
-            @updatePosition()
+            if @getSetting 'showArrow'
+              arrowCss = getArrowCss()
+              $miniTipArrow.css(arrowCss['arrow'])
+              $miniTipArrowShadow.css(arrowCss['shadow'])
 
             # update the miniTip position when window gets re sized
             ($ window).resize @updatePosition
@@ -241,6 +239,8 @@ jQuery ->
                 # attach the hover events to the element
                 @$element.hover((=>
                     _hover = true
+                  
+                    @updatePosition()
 
                     setTimeout(=>
                         @show() if _hover
@@ -252,6 +252,7 @@ jQuery ->
             else
                 # on click
                 @$element.bind('click', =>
+                    @updatePosition()
                     @show()
                     setTimeout(=>
                         @hide()
