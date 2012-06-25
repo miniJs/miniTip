@@ -1,4 +1,4 @@
-# [miniTip jQuery plugin](http://minijs.com/plugins/8/notification) [![Build Status](https://secure.travis-ci.org/miniJs/miniTip.png?branch=master)](http://travis-ci.org/matthieua/miniTip)
+# [miniTip jQuery plugin](http://minijs.com/plugins/6/tip) [![Build Status](https://secure.travis-ci.org/miniJs/miniTip.png?branch=master)](http://travis-ci.org/matthieua/miniTip)
 
 miniTip is very basic but powerful tooltip jQuery plugin that allows you to show tooltips on a page at any time and it just works!
 
@@ -15,6 +15,23 @@ http://minijs.com/plugins/6/tip
 If you find a bug, please raise it the issue here on Github! 
 
 https://github.com/miniJs/miniTip/issues
+
+## Tests with Jasmine
+
+The boilerplate also encourages you to write tests for your plugin with [Jasmine](http://pivotal.github.com/jasmine/).
+
+To be able to run the test suite, you'll need to install the Jasmine gem. If you have bundler installed just follow these instructions:
+
+- run `bundle install`
+- run `rake jasmine` and go to 'http://localhost:8888/'
+
+### Using Guard Jasmine
+
+Guard automatically tests your Jasmine specs when files are modified which will significantly increase your productivity.
+
+- intall [phantomjs](http://phantomjs.org/) or just run `brew install phantomjs`
+- run `guard` from the plugin directory
+
 
 ## Developer
 
