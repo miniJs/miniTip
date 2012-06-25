@@ -263,6 +263,8 @@ jQuery ->
         # initialise the plugin
         @init()
 
+        this
+
     $.fn.miniTip = (options) ->
         return this.each ->
             if undefined == ($ this).data('minTip')

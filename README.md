@@ -1,5 +1,4 @@
-
-# miniTip jQuery plugin
+# [miniTip jQuery plugin](http://minijs.com/plugins/8/notification) [![Build Status](https://secure.travis-ci.org/miniJs/miniTip.png?branch=master)](http://travis-ci.org/matthieua/miniTip)
 
 miniTip is very basic but powerful tooltip jQuery plugin that allows you to show tooltips on a page at any time and it just works!
 

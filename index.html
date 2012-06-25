@@ -105,7 +105,7 @@
   </footer>
 </div>
 <!-- end of #container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="js/libs/jquery.min.js"></script>
 <script src="js/miniTip.js"></script>
 <script>
   $(function() {
@@ -119,11 +119,11 @@
                                         'showAnimateProperties' : {'top': '-=10'},
                                         'hideAnimateProperties' : {'top': '+=10'},
                                         'position'              : 'bottom',
-                                        'onLoad'                : function(element, minitip) {
+                                        'onLoad'                : function(element, tooltip) {
                                             $(element).animate({'opacity': 0.35}, '350');
 
                                         },
-                                        'onHide'                : function(element, minitip) {
+                                        'onHide'                : function(element, tooltip) {
                                             $(element).animate({'opacity': 1}, '250');
 
                                         }
