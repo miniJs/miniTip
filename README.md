@@ -19,7 +19,7 @@ https://github.com/miniJs/miniTip/issues
 
 ## Developer
 
-Developed by [Matthieu Aussaguel](mailto:matthieu.aussaguel@gmail), [mynameismatthieu.com](http://mynameismatthieu.com)
+Developed by [Matthieu Aussaguel](mailto:matthieu.aussaguel@gmail.com), [mynameismatthieu.com](http://mynameismatthieu.com)
 
 + http://twitter.com/mattaussaguel
 + http://github.com/matthieua
