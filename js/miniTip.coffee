@@ -3,7 +3,6 @@
 # Instructions: http://minijs.com/plugins/6/tip
 # By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @mattaussaguel
 # Version: 1.0 Stable
-# Updated: June 10, 2012
 #
 
 jQuery ->

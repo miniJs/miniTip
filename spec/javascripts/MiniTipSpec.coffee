@@ -4,7 +4,7 @@ describe 'miniTip', ->
 
   beforeEach ->
     loadFixtures 'fragment.html'
-    @$element = $('#fixtures')
+    @$element = $('.tip')
 
   it 'should be available on the jQuery object', ->
     expect($.fn.miniTip).toBeDefined()

@@ -7,7 +7,7 @@
     };
     beforeEach(function() {
       loadFixtures('fragment.html');
-      return this.$element = $('#fixtures');
+      return this.$element = $('.tip');
     });
     it('should be available on the jQuery object', function() {
       return expect($.fn.miniTip).toBeDefined();
