@@ -8,5 +8,4 @@ group :development do
   gem 'guard-jasmine'
   gem 'guard-coffeescript'
   gem 'rb-fsevent'
-  gem 'growl'
 end

@@ -195,7 +195,7 @@ jQuery ->
 
             # generate the miniTip HTML and append to the body
             @$miniTipContent =  $('<div />', {'class': 'minitip-content'})
-            @$miniTip = $('<div />', {'class' : 'minitip ' + @getSetting('className'), 'css' : miniTipCss}).html(@$miniTipContent)
+            @$miniTip = $('<div />', {'class': 'minitip ' + @getSetting('className'), 'css': miniTipCss}).html(@$miniTipContent)
                                                                                                                 .appendTo('body')
             # add arrow to the tooltip
             if @getSetting 'showArrow'
@@ -253,7 +253,7 @@ jQuery ->
                 @$element.bind('click', =>
                     @updatePosition()
                     @show()
-                    setTimeout(=>
+                    window.setTimeout(=>
                         @hide()
                     , @getSetting 'delay')
                 )

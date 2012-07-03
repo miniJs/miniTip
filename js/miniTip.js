@@ -245,7 +245,7 @@
           return this.$element.bind('click', function() {
             _this.updatePosition();
             _this.show();
-            return setTimeout(function() {
+            return window.setTimeout(function() {
               return _this.hide();
             }, _this.getSetting('delay'));
           });
