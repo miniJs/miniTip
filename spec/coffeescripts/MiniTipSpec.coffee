@@ -44,11 +44,67 @@ describe 'miniTip', ->
       expect( plugin.settings.event ).toBe( options.event )
 
   describe 'style', ->
+    beforeEach ->
+      setFixtures fixtureOne
+      @$element = $('.tip')
+
     describe 'position', ->
+      it "should position the tooltip at the top of the cursor by default", ->
+        plugin = new $.miniTip( @$element, { offset: 0 } )
+        @$element.trigger('mouseenter')
+
+        expect(plugin.getPosition().top).toBeLessThan @$element.offset().top 
+
+      it "should position the tooltip at the left of the cursor", ->
+        plugin = new $.miniTip( @$element, { position: 'left', offset: 0 } )
+        @$element.trigger('mouseenter')
+
+        expect(plugin.getPosition().left).toBeLessThan @$element.offset().left 
+
+      it "should position the tooltip at the right of the cursor", ->
+        plugin = new $.miniTip( @$element, { position: 'right', offset: 0 }  )
+        @$element.trigger('mouseenter')
+
+        expect(plugin.getPosition().left).toBeGreaterThan @$element.offset().left 
+
+      it "should position the tooltip at the bottom of the cursor", ->
+        plugin = new $.miniTip( @$element, { position: 'bottom', offset: 0 }  )
+        @$element.trigger('mouseenter')
+
+        expect(plugin.getPosition().top).toBeGreaterThan @$element.offset().top 
+
     describe 'offset', ->
-    describe 'opacity', ->
+      it "should add an offset of 10 pixels by default", ->
+        plugin = new $.miniTip( @$element )
+        plugin.$miniTip.height(100)
+        @$element.trigger('mouseenter')        
+
+        expect(plugin.getPosition().top).toBe( @$element.offset().top - 100 - 10 )
+
+      it "should add a custom offset", ->
+        plugin = new $.miniTip( @$element, { offset: 100 } )
+        plugin.$miniTip.height(100)
+        @$element.trigger('mouseenter')        
+
+        expect(plugin.getPosition().top).toBe( @$element.offset().top - 100 - 100 )
+
     describe 'showArrow', ->
+      it "should add an arrow to the tooltip by default", ->
+        plugin = new $.miniTip( @$element )
+
+        expect(plugin.$miniTip.find('.minitip-arrow').first()).toExist()
+
+      it "should not add an arrow to the tooltip when false", ->
+        plugin = new $.miniTip( @$element, { showArrow: false } )
+
+        expect(plugin.$miniTip.find('.minitip-arrow')).not.toExist()
+
     describe 'className', ->
+      it 'should not add class to the minitip apart from minitip by default', ->
+        plugin = new $.miniTip( @$element )
+
+        expect(plugin.$miniTip[0].classList[0]).toBe 'minitip'
+        expect(plugin.$miniTip[0].classList.length).toBe 1
 
   describe 'event', ->
     beforeEach ->
@@ -72,7 +128,6 @@ describe 'miniTip', ->
 
         expect(plugin.show).toHaveBeenCalled()
 
-
     describe 'delay', ->
       it "should add 200 milliseconds delay by default", ->
         plugin   = new $.miniTip( @$element )
@@ -87,7 +142,6 @@ describe 'miniTip', ->
         @$element.trigger( 'mouseenter' )
 
         expect(window.setTimeout).toHaveBeenCalledWith(jasmine.any(Function), 0)
-
 
   describe 'content', ->
     it 'should populate the tooltip with the title attribute content', ->

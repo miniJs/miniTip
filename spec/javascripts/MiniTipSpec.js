@@ -45,11 +45,87 @@
       });
     });
     describe('style', function() {
-      describe('position', function() {});
-      describe('offset', function() {});
-      describe('opacity', function() {});
-      describe('showArrow', function() {});
-      return describe('className', function() {});
+      beforeEach(function() {
+        setFixtures(fixtureOne);
+        return this.$element = $('.tip');
+      });
+      describe('position', function() {
+        it("should position the tooltip at the top of the cursor by default", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            offset: 0
+          });
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().top).toBeLessThan(this.$element.offset().top);
+        });
+        it("should position the tooltip at the left of the cursor", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            position: 'left',
+            offset: 0
+          });
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().left).toBeLessThan(this.$element.offset().left);
+        });
+        it("should position the tooltip at the right of the cursor", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            position: 'right',
+            offset: 0
+          });
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().left).toBeGreaterThan(this.$element.offset().left);
+        });
+        return it("should position the tooltip at the bottom of the cursor", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            position: 'bottom',
+            offset: 0
+          });
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().top).toBeGreaterThan(this.$element.offset().top);
+        });
+      });
+      describe('offset', function() {
+        it("should add an offset of 10 pixels by default", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          plugin.$miniTip.height(100);
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().top).toBe(this.$element.offset().top - 100 - 10);
+        });
+        return it("should add a custom offset", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            offset: 100
+          });
+          plugin.$miniTip.height(100);
+          this.$element.trigger('mouseenter');
+          return expect(plugin.getPosition().top).toBe(this.$element.offset().top - 100 - 100);
+        });
+      });
+      describe('showArrow', function() {
+        it("should add an arrow to the tooltip by default", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          return expect(plugin.$miniTip.find('.minitip-arrow').first()).toExist();
+        });
+        return it("should not add an arrow to the tooltip when false", function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            showArrow: false
+          });
+          return expect(plugin.$miniTip.find('.minitip-arrow')).not.toExist();
+        });
+      });
+      return describe('className', function() {
+        return it('should not add class to the minitip apart from minitip by default', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          expect(plugin.$miniTip[0].classList[0]).toBe('minitip');
+          return expect(plugin.$miniTip[0].classList.length).toBe(1);
+        });
+      });
     });
     describe('event', function() {
       beforeEach(function() {

@@ -8,7 +8,6 @@
         position: 'top',
         event: 'hover',
         offset: 10,
-        opacity: 0.95,
         delay: 200,
         showArrow: true,
         contentType: 'attribute',
@@ -37,10 +36,10 @@
         'opacity': 1
       };
       showAnimateProperties = {
-        'opacity': 1
+        opacity: 1
       };
       hideAnimateProperties = {
-        'opacity': 0
+        opacity: 0
       };
       this.settings = {};
       this.$element = $(element);

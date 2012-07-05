@@ -12,7 +12,6 @@ jQuery ->
           position:              'top'             # 'bottom' | 'top' | 'left' | 'right'
           event:                 'hover'           # 'hover' | 'click'
           offset:                10                # margin to the element
-          opacity:               0.95              # miniTip opacity
           delay:                 200               # delay time before the miniTip appears
           showArrow:             true              # show arrow
           
@@ -25,7 +24,7 @@ jQuery ->
           showEasing:            ''                # easing equation on show, must load http:#gsgd.co.uk/sandbox/jquery/easing/
           hideEasing:            ''                # easing equation on hide, must load http:#gsgd.co.uk/sandbox/jquery/easing/
 
-          className:              ''                # miniTip className - useful for to apply themes
+          className:              ''                # miniTip className - useful to apply themes
           showAnimateProperties:  {}                # animate properties on show, will fadeIn by default
           hideAnimateProperties:  {}                # animate properties on hde, will fadeOut by default
 
@@ -53,10 +52,12 @@ jQuery ->
         }
 
         # show animate properties
-        showAnimateProperties = { 'opacity': 1 }
+        showAnimateProperties =
+          opacity: 1
 
         # hide animate properties
-        hideAnimateProperties = { 'opacity': 0 }
+        hideAnimateProperties = 
+          opacity: 0
 
         ## public variables
         # plugin settings
@@ -141,16 +142,17 @@ jQuery ->
 
             # calculate the miniTip position
             switch position
-                when "bottom"
-                    coordinates['top'] = coordinates.top + @$element.outerHeight() + @getSetting('offset')
-                when "left"
-                    coordinates['left'] = coordinates.left - @$miniTip.outerWidth() - @getSetting('offset')
-                    coordinates['top'] -= 5
-                when "right"
-                    coordinates['left'] = coordinates.left  + @$element.outerWidth() + @getSetting('offset')
-                    coordinates['top'] -= 5
-                else
-                    coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('offset')
+              when "bottom"
+                coordinates['top'] = coordinates.top + @$element.outerHeight() + @getSetting('offset')
+              when "left"
+                coordinates['left'] = coordinates.left - @$miniTip.outerWidth() - @getSetting('offset')
+                coordinates['top'] -= 5
+              when "right"
+                coordinates['left'] = coordinates.left  + @$element.outerWidth() + @getSetting('offset')
+                coordinates['top'] -= 5
+              else
+                coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('offset')
+
 
             # returns the calculated coordinates
             coordinates
