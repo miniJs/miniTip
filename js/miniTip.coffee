@@ -35,21 +35,18 @@ jQuery ->
         }
 
         ## private variables
-        # current state
-        state = 'hidden'
 
         # miniTip title
         content = ''
 
         # miniTip default css
-        miniTipCss = {
-            'display':  'none'
-            'position': 'absolute'
-            'top':      0
-            'left':     0
+        miniTipCss =
+            display:  'none'
+            position: 'absolute'
+            top:      0
+            left:     0
+            opacity:  1
             'z-index':  99999
-            'opacity':  1
-        }
 
         # show animate properties
         showAnimateProperties =
@@ -65,41 +62,47 @@ jQuery ->
 
         # jQuery version of DOM element attached to the plugin
         @$element = $ element
+
+        # Set the initial state 
+        @state = 'hidden'
         
         ## private methods
         # set the current state
-        setState = (_state) ->
-          state = _state
+        setState = (@state) =>
 
         # get the arrow Css
         getArrowCss = =>
           arrowCss = {}
-          arrowCss['arrow'] = { 'position': 'absolute', 'height' : 0, 'width'  : 0, 'border' : '6px solid transparent' }
+          arrowCss['arrow'] =
+            position: 'absolute'
+            height: 0
+            width: 0
+            border: '6px solid transparent'
           
           #element position
           position = @getSetting 'position'
 
           # init the css properties objects for manipulation
-          _arrowCss = _shadowCss = {}
+          _arrowCss          = _shadowCss = {}
           _shadowBorderColor = @$miniTipContent.css('border-color')
-          _borderColor = @$miniTipContent.css('background-color')
+          _borderColor       = @$miniTipContent.css('background-color')
 
           # calulate the css properties depending on the position
           switch position
             when "left"
-                _arrowCss = { 'right' : '-11px', 'top'   : '7px', 'border-left-color' : _borderColor }
-                _shadowCss = { 'right' : '-14px', 'border-left-color' : _shadowBorderColor, 'top': '6px' }
+              _arrowCss  = { 'right' : '-11px', 'top'   : '7px', 'border-left-color' : _borderColor }
+              _shadowCss = { 'right' : '-14px', 'border-left-color' : _shadowBorderColor, 'top': '6px' }
             when "right"
-                _arrowCss = { 'left' : '-11px', 'top'   : '7px', 'border-right-color' : _borderColor }
-                _shadowCss = { 'left' : '-14px', 'border-right-color' : _shadowBorderColor, 'top': '6px' }
+              _arrowCss  = { 'left' : '-11px', 'top'   : '7px', 'border-right-color' : _borderColor }
+              _shadowCss = { 'left' : '-14px', 'border-right-color' : _shadowBorderColor, 'top': '6px' }
             when "bottom"
-                _left = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
-                _arrowCss = { 'top' : '-11px', 'left'   : _left + 'px', 'border-bottom-color' : _borderColor }
-                _shadowCss = { 'top' : '-14px', 'border-bottom-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
+              _left      = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
+              _arrowCss  = { 'top' : '-11px', 'left'   : _left + 'px', 'border-bottom-color' : _borderColor }
+              _shadowCss = { 'top' : '-14px', 'border-bottom-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
             else
-                _left = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
-                _arrowCss = { 'bottom' : '-11px', 'left'   : _left + 'px', 'border-top-color' : _borderColor }
-                _shadowCss = { 'bottom' : '-14px', 'border-top-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
+              _left      = if (@$miniTip.outerWidth() < @$element.outerWidth()) then Math.floor(@$miniTip.outerWidth() / 5) else Math.floor(@$element.outerWidth() / 5)
+              _arrowCss  = { 'bottom' : '-11px', 'left'   : _left + 'px', 'border-top-color' : _borderColor }
+              _shadowCss = { 'bottom' : '-14px', 'border-top-color' : _shadowBorderColor, 'left': (_left - 1) + 'px' }
 
           # merge ojects
           arrowCss['arrow']  = $.extend {}, arrowCss['arrow'], _arrowCss
@@ -116,21 +119,17 @@ jQuery ->
         @callSettingFunction = (functionName) ->
           @settings[functionName](element, @$miniTip[0])
 
-        # get current state
-        @getState = ->
-          state
-
         # get miniTip content
         @getContent = ->
           content
 
         # set miniTip content
         @setContent = (_content) ->
-            content = _content
+          content = _content
 
         # update miniTip content
-        @updateMiniTipContent = (content) ->
-            @$miniTipContent.html($.trim(content))
+        @updateMiniTipContent = ->
+          @$miniTipContent.html( $.trim( @getContent() ) )
 
         # get miniTip coordinates
         @getPosition = ->
@@ -153,7 +152,6 @@ jQuery ->
               else
                 coordinates['top'] = coordinates.top - @$miniTip.outerHeight() - @getSetting('offset')
 
-
             # returns the calculated coordinates
             coordinates
 
@@ -163,31 +161,30 @@ jQuery ->
 
         # show miniTip
         @show = ->
-          if @getState() is 'hidden' or @getState is 'hiding'
+          if @state is 'hidden' or @state is 'hiding'
             @callSettingFunction 'onLoad'
             setState 'showing'
             @$miniTip.stop(true, true)
                      .css('opacity', 0)
                      .show()
                      .animate(showAnimateProperties, @getSetting('showSpeed'), @getSetting('showEasing'), =>
-                if @getState() is 'showing'
-                    @$miniTip.show()
-                    @callSettingFunction 'onVisible'
-                    setState 'visible'
+              if @state is 'showing'
+                @$miniTip.show()
+                @callSettingFunction 'onVisible'
+                setState 'visible'
             )
-
 
         # show miniTip
         @hide = ->
-          if @getState() is'visible' or @getState() is 'showing'
+          if @state is'visible' or @state is 'showing'
             @callSettingFunction 'onHide'
             setState 'hiding'
             @$miniTip.stop(true, true)
                      .animate(hideAnimateProperties, @getSetting('hideSpeed'), @getSetting('hideEasing'), =>
-                if @getState() is 'hiding'
-                    @$miniTip.hide()
-                    @callSettingFunction 'onHidden'
-                    setState 'hidden'
+              if @state is 'hiding'
+                  @$miniTip.hide()
+                  @callSettingFunction 'onHidden'
+                  setState 'hidden'
             )
 
         # init function
@@ -217,7 +214,7 @@ jQuery ->
                 @$element.attr @getSetting('contentAttribute'), ''
 
             # if the content is empty, we stop processing else we populate the miniTip
-            if not @getContent()? then return this false else @updateMiniTipContent @getContent()
+            if not @getContent()? then return this false else @updateMiniTipContent()
 
             # update the arrow css
             if @getSetting 'showArrow'

@@ -2,7 +2,7 @@
 
   jQuery(function() {
     $.miniTip = function(element, options) {
-      var content, getArrowCss, hideAnimateProperties, miniTipCss, setState, showAnimateProperties, state,
+      var content, getArrowCss, hideAnimateProperties, miniTipCss, setState, showAnimateProperties,
         _this = this;
       this.defaults = {
         position: 'top',
@@ -25,15 +25,14 @@
         onHide: function() {},
         onHidden: function() {}
       };
-      state = 'hidden';
       content = '';
       miniTipCss = {
-        'display': 'none',
-        'position': 'absolute',
-        'top': 0,
-        'left': 0,
-        'z-index': 99999,
-        'opacity': 1
+        display: 'none',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: 1,
+        'z-index': 99999
       };
       showAnimateProperties = {
         opacity: 1
@@ -43,17 +42,18 @@
       };
       this.settings = {};
       this.$element = $(element);
-      setState = function(_state) {
-        return state = _state;
+      this.state = 'hidden';
+      setState = function(state) {
+        _this.state = state;
       };
       getArrowCss = function() {
         var arrowCss, position, _arrowCss, _borderColor, _left, _shadowBorderColor, _shadowCss;
         arrowCss = {};
         arrowCss['arrow'] = {
-          'position': 'absolute',
-          'height': 0,
-          'width': 0,
-          'border': '6px solid transparent'
+          position: 'absolute',
+          height: 0,
+          width: 0,
+          border: '6px solid transparent'
         };
         position = _this.getSetting('position');
         _arrowCss = _shadowCss = {};
@@ -123,17 +123,14 @@
       this.callSettingFunction = function(functionName) {
         return this.settings[functionName](element, this.$miniTip[0]);
       };
-      this.getState = function() {
-        return state;
-      };
       this.getContent = function() {
         return content;
       };
       this.setContent = function(_content) {
         return content = _content;
       };
-      this.updateMiniTipContent = function(content) {
-        return this.$miniTipContent.html($.trim(content));
+      this.updateMiniTipContent = function() {
+        return this.$miniTipContent.html($.trim(this.getContent()));
       };
       this.getPosition = function() {
         var coordinates, position;
@@ -161,11 +158,11 @@
       };
       this.show = function() {
         var _this = this;
-        if (this.getState() === 'hidden' || this.getState === 'hiding') {
+        if (this.state === 'hidden' || this.state === 'hiding') {
           this.callSettingFunction('onLoad');
           setState('showing');
           return this.$miniTip.stop(true, true).css('opacity', 0).show().animate(showAnimateProperties, this.getSetting('showSpeed'), this.getSetting('showEasing'), function() {
-            if (_this.getState() === 'showing') {
+            if (_this.state === 'showing') {
               _this.$miniTip.show();
               _this.callSettingFunction('onVisible');
               return setState('visible');
@@ -175,11 +172,11 @@
       };
       this.hide = function() {
         var _this = this;
-        if (this.getState() === 'visible' || this.getState() === 'showing') {
+        if (this.state === 'visible' || this.state === 'showing') {
           this.callSettingFunction('onHide');
           setState('hiding');
           return this.$miniTip.stop(true, true).animate(hideAnimateProperties, this.getSetting('hideSpeed'), this.getSetting('hideEasing'), function() {
-            if (_this.getState() === 'hiding') {
+            if (_this.state === 'hiding') {
               _this.$miniTip.hide();
               _this.callSettingFunction('onHidden');
               return setState('hidden');
@@ -216,7 +213,7 @@
         if (!(this.getContent() != null)) {
           return this(false);
         } else {
-          this.updateMiniTipContent(this.getContent());
+          this.updateMiniTipContent();
         }
         if (this.getSetting('showArrow')) {
           arrowCss = getArrowCss();
