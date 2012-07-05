@@ -42,7 +42,7 @@ Developed by [Matthieu Aussaguel](mailto:matthieu.aussaguel@gmail.com), [mynamei
 
 ## To Do
 
-* Add test coverage
+* Make the toolip responsive
 
 ## Licence
 
