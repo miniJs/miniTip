@@ -272,7 +272,45 @@ describe 'miniTip', ->
         expect( plugin.$miniTip.animate).toHaveBeenCalledWith( $.extend( @defaultProperties, { color: 'yellow' } ), jasmine.any( Number ), jasmine.any( String ), jasmine.any( Function ) )    
 
   describe 'callbacks', ->
+    beforeEach ->
+      setFixtures fixtureOne
+      @$element = $('.tip')
+      @foo      = jasmine.createSpy('foo')
+
     describe 'onLoad', ->
+      it 'should call onLoad when showing the tooltip', ->
+        plugin = new $.miniTip( @$element, { onLoad: @foo } )
+        expect(@foo).not.toHaveBeenCalled()
+        plugin.show()
+
+        expect(@foo).toHaveBeenCalled()
+        expect(plugin.state).toBe('showing')
+      
     describe 'onVisible', ->
+      it 'should call onLoad when tooltip is visible', ->
+        plugin = new $.miniTip( @$element, { onVisible: @foo, showSpeed: 0 } )
+        expect(@foo).not.toHaveBeenCalled()
+        plugin.show()
+
+        expect(plugin.state).toBe('visible')
+        expect(@foo).toHaveBeenCalled()
+
     describe 'onHide', ->
+      it 'should call onHide when hiding the tooltip', ->
+        plugin = new $.miniTip( @$element, { onHide: @foo } )
+        expect(@foo).not.toHaveBeenCalled()
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect(@foo).toHaveBeenCalled()
+        expect(plugin.state).toBe('hiding')
+
     describe 'onHidden', ->
+      it 'should call onHidden when tooltip is hidden', ->
+        plugin = new $.miniTip( @$element, { onHidden: @foo, hideSpeed: 0 } )
+        expect(@foo).not.toHaveBeenCalled()
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect(plugin.state).toBe('hidden')
+        expect(@foo).toHaveBeenCalled()

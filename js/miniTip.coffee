@@ -170,6 +170,7 @@ jQuery ->
                      .animate(showAnimateProperties, @getSetting('showSpeed'), @getSetting('showEasing'), =>
               if @state is 'showing'
                 @$miniTip.show()
+
                 @callSettingFunction 'onVisible'
                 setState 'visible'
             )

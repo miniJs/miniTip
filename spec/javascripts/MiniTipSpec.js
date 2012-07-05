@@ -333,10 +333,63 @@
       });
     });
     return describe('callbacks', function() {
-      describe('onLoad', function() {});
-      describe('onVisible', function() {});
-      describe('onHide', function() {});
-      return describe('onHidden', function() {});
+      beforeEach(function() {
+        setFixtures(fixtureOne);
+        this.$element = $('.tip');
+        return this.foo = jasmine.createSpy('foo');
+      });
+      describe('onLoad', function() {
+        return it('should call onLoad when showing the tooltip', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            onLoad: this.foo
+          });
+          expect(this.foo).not.toHaveBeenCalled();
+          plugin.show();
+          expect(this.foo).toHaveBeenCalled();
+          return expect(plugin.state).toBe('showing');
+        });
+      });
+      describe('onVisible', function() {
+        return it('should call onLoad when tooltip is visible', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            onVisible: this.foo,
+            showSpeed: 0
+          });
+          expect(this.foo).not.toHaveBeenCalled();
+          plugin.show();
+          expect(plugin.state).toBe('visible');
+          return expect(this.foo).toHaveBeenCalled();
+        });
+      });
+      describe('onHide', function() {
+        return it('should call onHide when hiding the tooltip', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            onHide: this.foo
+          });
+          expect(this.foo).not.toHaveBeenCalled();
+          plugin.state = 'visible';
+          plugin.hide();
+          expect(this.foo).toHaveBeenCalled();
+          return expect(plugin.state).toBe('hiding');
+        });
+      });
+      return describe('onHidden', function() {
+        return it('should call onHidden when tooltip is hidden', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            onHidden: this.foo,
+            hideSpeed: 0
+          });
+          expect(this.foo).not.toHaveBeenCalled();
+          plugin.state = 'visible';
+          plugin.hide();
+          expect(plugin.state).toBe('hidden');
+          return expect(this.foo).toHaveBeenCalled();
+        });
+      });
     });
   });
 
