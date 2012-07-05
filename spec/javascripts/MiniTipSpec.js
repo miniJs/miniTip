@@ -196,11 +196,141 @@
       });
     });
     describe('animation', function() {
-      describe('sowSpeed', function() {});
-      describe('hideSpeed', function() {});
-      describe('showEasing', function() {});
-      describe('showAnimateProperties', function() {});
-      return describe('hideAnimateProperties', function() {});
+      beforeEach(function() {
+        setFixtures(fixtureOne);
+        return this.$element = $('.tip');
+      });
+      describe('sowSpeed', function() {
+        it('should animate the tooltip for 350 milliseconds by default on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), 350, jasmine.any(String), jasmine.any(Function));
+        });
+        return it('should animate the tooltip for a custom time on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            showSpeed: 1000
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), 1000, jasmine.any(String), jasmine.any(Function));
+        });
+      });
+      describe('hideSpeed', function() {
+        it('should animate the tooltip for 250 milliseconds by default on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.state = 'visible';
+          plugin.hide();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), 250, jasmine.any(String), jasmine.any(Function));
+        });
+        return it('should animate the tooltip for a custom time on hide', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            hideSpeed: 1000
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.state = 'visible';
+          plugin.hide();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), 1000, jasmine.any(String), jasmine.any(Function));
+        });
+      });
+      describe('showEasing', function() {
+        it('should animate the tooltip with no easing by default on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Number), '', jasmine.any(Function));
+        });
+        return it('should animate the tooltip with a custom easing on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            showEasing: 'swing'
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Number), 'swing', jasmine.any(Function));
+        });
+      });
+      describe('hideEasing', function() {
+        it('should animate the tooltip with no easing by default on hide', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Number), '', jasmine.any(Function));
+        });
+        return it('should animate the tooltip with a custom easing on hide', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            hideEasing: 'swing'
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.state = 'visible';
+          plugin.hide();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Number), 'swing', jasmine.any(Function));
+        });
+      });
+      describe('showAnimateProperties', function() {
+        beforeEach(function() {
+          return this.defaultProperties = {
+            opacity: 1
+          };
+        });
+        it('should animate tooltip with no custom properties by default on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(this.defaultProperties, jasmine.any(Number), jasmine.any(String), jasmine.any(Function));
+        });
+        return it('should animate tooltip with custom properties on show', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            showAnimateProperties: {
+              color: 'red'
+            }
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.show();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith($.extend(this.defaultProperties, {
+            color: 'red'
+          }), jasmine.any(Number), jasmine.any(String), jasmine.any(Function));
+        });
+      });
+      return describe('hideAnimateProperties', function() {
+        beforeEach(function() {
+          return this.defaultProperties = {
+            opacity: 0
+          };
+        });
+        it('should animate tooltip with no custom properties by default on hide', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element);
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.state = 'visible';
+          plugin.hide();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith(this.defaultProperties, jasmine.any(Number), jasmine.any(String), jasmine.any(Function));
+        });
+        return it('should animate tooltip with custom properties on hide', function() {
+          var plugin;
+          plugin = new $.miniTip(this.$element, {
+            hideAnimateProperties: {
+              color: 'yellow'
+            }
+          });
+          spyOn(plugin.$miniTip, 'animate');
+          plugin.state = 'visible';
+          plugin.hide();
+          return expect(plugin.$miniTip.animate).toHaveBeenCalledWith($.extend(this.defaultProperties, {
+            color: 'yellow'
+          }), jasmine.any(Number), jasmine.any(String), jasmine.any(Function));
+        });
+      });
     });
     return describe('callbacks', function() {
       describe('onLoad', function() {});

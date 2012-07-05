@@ -164,11 +164,112 @@ describe 'miniTip', ->
 
 
   describe 'animation', ->
+    beforeEach ->
+      setFixtures fixtureOne
+      @$element = $('.tip')
+
     describe 'sowSpeed', ->
+      it 'should animate the tooltip for 350 milliseconds by default on show', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), 350, jasmine.any( String ), jasmine.any( Function ) )
+
+      it 'should animate the tooltip for a custom time on show', ->
+        plugin = new $.miniTip( @$element, { showSpeed: 1000 } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), 1000, jasmine.any( String ), jasmine.any( Function ) )
+
     describe 'hideSpeed', ->
+      it 'should animate the tooltip for 250 milliseconds by default on show', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect( plugin.$miniTip.animate ).toHaveBeenCalledWith( jasmine.any( Object ), 250, jasmine.any( String ), jasmine.any( Function ) )
+
+      it 'should animate the tooltip for a custom time on hide', ->
+        plugin = new $.miniTip( @$element, { hideSpeed: 1000 } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect( plugin.$miniTip.animate ).toHaveBeenCalledWith( jasmine.any( Object ), 1000, jasmine.any( String ), jasmine.any( Function ) )
+
     describe 'showEasing', ->
+      it 'should animate the tooltip with no easing by default on show', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), jasmine.any( Number ), '', jasmine.any( Function ) )
+
+      it 'should animate the tooltip with a custom easing on show', ->
+        plugin = new $.miniTip( @$element, { showEasing: 'swing' } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), jasmine.any( Number ), 'swing', jasmine.any( Function ) )
+
+    describe 'hideEasing', ->
+      it 'should animate the tooltip with no easing by default on hide', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), jasmine.any( Number ), '', jasmine.any( Function ) )
+
+      it 'should animate the tooltip with a custom easing on hide', ->
+        plugin = new $.miniTip( @$element, { hideEasing: 'swing' } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( jasmine.any( Object ), jasmine.any( Number ), 'swing', jasmine.any( Function ) )
+
     describe 'showAnimateProperties', ->
+      beforeEach ->
+        @defaultProperties =
+          opacity: 1
+
+      it 'should animate tooltip with no custom properties by default on show', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( @defaultProperties, jasmine.any( Number ), jasmine.any( String ), jasmine.any( Function ) )
+
+      it 'should animate tooltip with custom properties on show', ->
+        plugin = new $.miniTip( @$element, showAnimateProperties: { color: 'red' } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.show()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( $.extend( @defaultProperties, { color: 'red' } ), jasmine.any( Number ), jasmine.any( String ), jasmine.any( Function ) )    
+
     describe 'hideAnimateProperties', ->
+      beforeEach ->
+        @defaultProperties =
+          opacity: 0
+
+      it 'should animate tooltip with no custom properties by default on hide', ->
+        plugin = new $.miniTip( @$element )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( @defaultProperties, jasmine.any( Number ), jasmine.any( String ), jasmine.any( Function ) )
+
+      it 'should animate tooltip with custom properties on hide', ->
+        plugin = new $.miniTip( @$element, hideAnimateProperties: { color: 'yellow' } )
+        spyOn(plugin.$miniTip, 'animate')
+        plugin.state = 'visible'
+        plugin.hide()
+
+        expect( plugin.$miniTip.animate).toHaveBeenCalledWith( $.extend( @defaultProperties, { color: 'yellow' } ), jasmine.any( Number ), jasmine.any( String ), jasmine.any( Function ) )    
 
   describe 'callbacks', ->
     describe 'onLoad', ->

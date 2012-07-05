@@ -239,7 +239,6 @@ jQuery ->
                     _hover = true
                   
                     @updatePosition()
-
                     setTimeout(=>
                         @show() if _hover
                     , @getSetting 'delay')
