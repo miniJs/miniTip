@@ -198,9 +198,46 @@ jQuery(function() {
         });
       }
     };
-    this.init = function() {
-      var $miniTipArrow, $miniTipArrowShadow, arrowCss, _hover,
+    this.activate = function() {
+      var _hover,
         _this = this;
+      if (this.getSetting('event') === 'hover') {
+        _hover = false;
+        mouseEnterEventHandler = function() {
+          _hover = true;
+          _this.updatePosition();
+          return setTimeout(function() {
+            if (_hover) {
+              return _this.show();
+            }
+          }, _this.getSetting('delay'));
+        };
+        mouseLeaveEventHandler = function() {
+          _hover = false;
+          return _this.hide();
+        };
+        return this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
+      } else {
+        clickEventHandler = function() {
+          _this.updatePosition();
+          _this.show();
+          return window.setTimeout(function() {
+            return _this.hide();
+          }, _this.getSetting('delay'));
+        };
+        return this.$element.bind('click', clickEventHandler);
+      }
+    };
+    this.deactivate = function() {
+      if (this.getSetting('event') === 'hover') {
+        this.$element.unbind('mouseenter', mouseEnterEventHandler);
+        return this.$element.unbind('mouseleave', mouseLeaveEventHandler);
+      } else {
+        return this.$element.unbind('click', clickEventHandler);
+      }
+    };
+    this.init = function() {
+      var $miniTipArrow, $miniTipArrowShadow, arrowCss;
       this.settings = $.extend({}, this.defaults, options);
       this.$miniTipContent = $('<div />', {
         'class': 'minitip-content'
@@ -237,32 +274,7 @@ jQuery(function() {
       ($(window)).resize(this.updatePosition);
       showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));
       hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
-      if (this.getSetting('event') === 'hover') {
-        _hover = false;
-        mouseEnterEventHandler = function() {
-          _hover = true;
-          _this.updatePosition();
-          return setTimeout(function() {
-            if (_hover) {
-              return _this.show();
-            }
-          }, _this.getSetting('delay'));
-        };
-        mouseLeaveEventHandler = function() {
-          _hover = false;
-          return _this.hide();
-        };
-        return this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
-      } else {
-        clickEventHandler = function() {
-          _this.updatePosition();
-          _this.show();
-          return window.setTimeout(function() {
-            return _this.hide();
-          }, _this.getSetting('delay'));
-        };
-        return this.$element.bind('click', clickEventHandler);
-      }
+      return this.activate();
     };
     this.init();
     return this;

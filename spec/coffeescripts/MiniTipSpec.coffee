@@ -120,6 +120,14 @@ describe 'miniTip', ->
 
         expect(plugin.show).toHaveBeenCalled()
 
+      it 'should not show the tooltip on hover', ->
+        plugin = new $.miniTip( @$element )
+        plugin.deactivate()
+        spyOn(plugin, 'show')
+        @$element.trigger('mouseenter')
+        @clock.tick(200)
+
+        expect(plugin.show.callCount).toBe(0)
 
       it 'should show the tooltip on click', ->
         plugin = new $.miniTip( @$element, { event: 'click' } )
@@ -127,6 +135,15 @@ describe 'miniTip', ->
         @$element.trigger( 'click' )
 
         expect(plugin.show).toHaveBeenCalled()
+
+      it 'should not show the tooltip on click', ->
+        plugin = new $.miniTip( @$element, { event: 'click' } )
+        plugin.deactivate()
+        spyOn(plugin, 'show')
+        @$element.trigger('click')
+        @clock.tick(200)
+
+        expect(plugin.show.callCount).toBe(0)
 
       it 'should return the mouseEnter and MouseLeave handlers', ->
         plugin = new $.miniTip( @$element )
