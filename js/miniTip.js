@@ -1,7 +1,7 @@
 
 jQuery(function() {
   $.miniTip = function(element, options) {
-    var content, getArrowCss, hideAnimateProperties, miniTipCss, setState, showAnimateProperties,
+    var clickEventHandler, content, getArrowCss, hideAnimateProperties, miniTipCss, mouseEnterEventHandler, mouseLeaveEventHandler, setState, showAnimateProperties,
       _this = this;
     this.defaults = {
       position: 'top',
@@ -24,6 +24,9 @@ jQuery(function() {
       onHide: function() {},
       onHidden: function() {}
     };
+    mouseEnterEventHandler = null;
+    mouseLeaveEventHandler = null;
+    clickEventHandler = null;
     content = '';
     miniTipCss = {
       display: 'none',
@@ -118,6 +121,18 @@ jQuery(function() {
     };
     this.getSetting = function(settingKey) {
       return this.settings[settingKey];
+    };
+    this.getEventHandler = function() {
+      if (this.getSetting('event') === 'hover') {
+        return {
+          mouseEnter: mouseEnterEventHandler,
+          mouseLeave: mouseLeaveEventHandler
+        };
+      } else {
+        return {
+          click: clickEventHandler
+        };
+      }
     };
     this.callSettingFunction = function(functionName) {
       return this.settings[functionName](element, this.$miniTip[0]);
@@ -224,7 +239,7 @@ jQuery(function() {
       hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
       if (this.getSetting('event') === 'hover') {
         _hover = false;
-        return this.$element.hover((function() {
+        mouseEnterEventHandler = function() {
           _hover = true;
           _this.updatePosition();
           return setTimeout(function() {
@@ -232,18 +247,21 @@ jQuery(function() {
               return _this.show();
             }
           }, _this.getSetting('delay'));
-        }), (function() {
+        };
+        mouseLeaveEventHandler = function() {
           _hover = false;
           return _this.hide();
-        }));
+        };
+        return this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
       } else {
-        return this.$element.bind('click', function() {
+        clickEventHandler = function() {
           _this.updatePosition();
           _this.show();
           return window.setTimeout(function() {
             return _this.hide();
           }, _this.getSetting('delay'));
-        });
+        };
+        return this.$element.bind('click', clickEventHandler);
       }
     };
     this.init();

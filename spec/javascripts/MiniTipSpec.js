@@ -140,7 +140,7 @@ describe('miniTip', function() {
         this.clock.tick(200);
         return expect(plugin.show).toHaveBeenCalled();
       });
-      return it('should show the tooltip on click', function() {
+      it('should show the tooltip on click', function() {
         var plugin;
         plugin = new $.miniTip(this.$element, {
           event: 'click'
@@ -148,6 +148,21 @@ describe('miniTip', function() {
         spyOn(plugin, 'show');
         this.$element.trigger('click');
         return expect(plugin.show).toHaveBeenCalled();
+      });
+      it('should return the mouseEnter and MouseLeave handlers', function() {
+        var plugin, result;
+        plugin = new $.miniTip(this.$element);
+        result = plugin.getEventHandler();
+        expect(result.mouseEnter).not.toBe(null);
+        return expect(result.mouseLeave).not.toBe(null);
+      });
+      return it('should return the onClick event handler', function() {
+        var plugin, result;
+        plugin = new $.miniTip(this.$element, {
+          event: 'click'
+        });
+        result = plugin.getEventHandler();
+        return expect(result.click).not.toBe(null);
       });
     });
     return describe('delay', function() {

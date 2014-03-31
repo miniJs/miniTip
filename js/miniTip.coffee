@@ -36,6 +36,11 @@ jQuery ->
 
         ## private variables
 
+        # event handlers
+        mouseEnterEventHandler = null
+        mouseLeaveEventHandler = null
+        clickEventHandler = null
+
         # miniTip title
         content = ''
 
@@ -114,6 +119,13 @@ jQuery ->
         # get particular plugin setting
         @getSetting = (settingKey) ->
           @settings[settingKey]
+
+        # Get event handler
+        @getEventHandler = ->
+          if @getSetting('event') is 'hover'
+            return {mouseEnter: mouseEnterEventHandler, mouseLeave: mouseLeaveEventHandler}
+          else
+            return {click: clickEventHandler}
 
         # call one of the plugin setting functions
         @callSettingFunction = (functionName) ->
@@ -235,27 +247,30 @@ jQuery ->
                 # keep track of the hover state
                 _hover = false
 
+                mouseEnterEventHandler = =>
+                  _hover = true
+
+                  @updatePosition()
+                  setTimeout(=>
+                      @show() if _hover
+                  , @getSetting 'delay')
+
+                mouseLeaveEventHandler = =>
+                  _hover = false
+                  @hide()
+
                 # attach the hover events to the element
-                @$element.hover((=>
-                    _hover = true
-                  
-                    @updatePosition()
-                    setTimeout(=>
-                        @show() if _hover
-                    , @getSetting 'delay')
-                ), (=>
-                    _hover = false
-                    @hide()
-                ))
+                @$element.hover( mouseEnterEventHandler, mouseLeaveEventHandler)
             else
                 # on click
-                @$element.bind('click', =>
-                    @updatePosition()
-                    @show()
-                    window.setTimeout(=>
-                        @hide()
-                    , @getSetting 'delay')
-                )
+                clickEventHandler = =>
+                  @updatePosition()
+                  @show()
+                  window.setTimeout(=>
+                      @hide()
+                  , @getSetting 'delay')
+
+                @$element.bind('click', clickEventHandler)
         # end init function
 
         # initialise the plugin

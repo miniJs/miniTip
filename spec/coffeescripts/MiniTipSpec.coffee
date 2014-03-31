@@ -128,6 +128,17 @@ describe 'miniTip', ->
 
         expect(plugin.show).toHaveBeenCalled()
 
+      it 'should return the mouseEnter and MouseLeave handlers', ->
+        plugin = new $.miniTip( @$element )
+        result = plugin.getEventHandler()
+        expect(result.mouseEnter).not.toBe(null)
+        expect(result.mouseLeave).not.toBe(null)
+
+      it 'should return the onClick event handler', ->
+        plugin = new $.miniTip( @$element, { event: 'click' } )
+        result = plugin.getEventHandler()
+        expect(result.click).not.toBe(null)
+
     describe 'delay', ->
       it "should add 200 milliseconds delay by default", ->
         plugin   = new $.miniTip( @$element )
