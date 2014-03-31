@@ -119,6 +119,7 @@ describe 'miniTip', ->
         @clock.tick(200)
 
         expect(plugin.show).toHaveBeenCalled()
+        expect(plugin.isActivated()).toBe(true)
 
       it 'should not show the tooltip on hover', ->
         plugin = new $.miniTip( @$element )
@@ -128,6 +129,7 @@ describe 'miniTip', ->
         @clock.tick(200)
 
         expect(plugin.show.callCount).toBe(0)
+        expect(plugin.isActivated()).toBe(false)
 
       it 'should show the tooltip on click', ->
         plugin = new $.miniTip( @$element, { event: 'click' } )
@@ -135,6 +137,7 @@ describe 'miniTip', ->
         @$element.trigger( 'click' )
 
         expect(plugin.show).toHaveBeenCalled()
+        expect(plugin.isActivated()).toBe(true)
 
       it 'should not show the tooltip on click', ->
         plugin = new $.miniTip( @$element, { event: 'click' } )
@@ -144,6 +147,7 @@ describe 'miniTip', ->
         @clock.tick(200)
 
         expect(plugin.show.callCount).toBe(0)
+        expect(plugin.isActivated()).toBe(false)
 
       it 'should return the mouseEnter and MouseLeave handlers', ->
         plugin = new $.miniTip( @$element )

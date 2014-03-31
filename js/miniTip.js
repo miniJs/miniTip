@@ -1,7 +1,7 @@
 
 jQuery(function() {
   $.miniTip = function(element, options) {
-    var clickEventHandler, content, getArrowCss, hideAnimateProperties, miniTipCss, mouseEnterEventHandler, mouseLeaveEventHandler, setState, showAnimateProperties,
+    var activated, clickEventHandler, content, getArrowCss, hideAnimateProperties, miniTipCss, mouseEnterEventHandler, mouseLeaveEventHandler, setState, showAnimateProperties,
       _this = this;
     this.defaults = {
       position: 'top',
@@ -27,6 +27,7 @@ jQuery(function() {
     mouseEnterEventHandler = null;
     mouseLeaveEventHandler = null;
     clickEventHandler = null;
+    activated = true;
     content = '';
     miniTipCss = {
       display: 'none',
@@ -122,6 +123,9 @@ jQuery(function() {
     this.getSetting = function(settingKey) {
       return this.settings[settingKey];
     };
+    this.isActivated = function() {
+      return activated;
+    };
     this.getEventHandler = function() {
       if (this.getSetting('event') === 'hover') {
         return {
@@ -216,7 +220,7 @@ jQuery(function() {
           _hover = false;
           return _this.hide();
         };
-        return this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
+        this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
       } else {
         clickEventHandler = function() {
           _this.updatePosition();
@@ -225,16 +229,18 @@ jQuery(function() {
             return _this.hide();
           }, _this.getSetting('delay'));
         };
-        return this.$element.bind('click', clickEventHandler);
+        this.$element.bind('click', clickEventHandler);
       }
+      return activated = true;
     };
     this.deactivate = function() {
       if (this.getSetting('event') === 'hover') {
         this.$element.unbind('mouseenter', mouseEnterEventHandler);
-        return this.$element.unbind('mouseleave', mouseLeaveEventHandler);
+        this.$element.unbind('mouseleave', mouseLeaveEventHandler);
       } else {
-        return this.$element.unbind('click', clickEventHandler);
+        this.$element.unbind('click', clickEventHandler);
       }
+      return activated = false;
     };
     this.init = function() {
       var $miniTipArrow, $miniTipArrowShadow, arrowCss;

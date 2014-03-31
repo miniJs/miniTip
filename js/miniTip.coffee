@@ -41,6 +41,8 @@ jQuery ->
         mouseLeaveEventHandler = null
         clickEventHandler = null
 
+        activated = true
+
         # miniTip title
         content = ''
 
@@ -119,6 +121,9 @@ jQuery ->
         # get particular plugin setting
         @getSetting = (settingKey) ->
           @settings[settingKey]
+
+        @isActivated = ->
+          activated
 
         # Get event handler
         @getEventHandler = ->
@@ -232,6 +237,8 @@ jQuery ->
 
               @$element.bind('click', clickEventHandler)
 
+          activated = true
+
         #unbinds the event handlers.
         @deactivate = ->
           if @getSetting('event') is 'hover'
@@ -239,6 +246,8 @@ jQuery ->
               @$element.unbind('mouseleave', mouseLeaveEventHandler)
           else
               @$element.unbind('click', clickEventHandler)
+
+          activated = false
 
 
         # init function
