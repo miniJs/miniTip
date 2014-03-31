@@ -1,7 +1,7 @@
 
 jQuery(function() {
   $.miniTip = function(element, options) {
-    var content, getArrowCss, hideAnimateProperties, miniTipCss, setState, showAnimateProperties,
+    var activated, clickEventHandler, content, getArrowCss, hideAnimateProperties, miniTipCss, mouseEnterEventHandler, mouseLeaveEventHandler, setState, showAnimateProperties,
       _this = this;
     this.defaults = {
       position: 'top',
@@ -24,6 +24,10 @@ jQuery(function() {
       onHide: function() {},
       onHidden: function() {}
     };
+    mouseEnterEventHandler = null;
+    mouseLeaveEventHandler = null;
+    clickEventHandler = null;
+    activated = true;
     content = '';
     miniTipCss = {
       display: 'none',
@@ -119,6 +123,21 @@ jQuery(function() {
     this.getSetting = function(settingKey) {
       return this.settings[settingKey];
     };
+    this.isActivated = function() {
+      return activated;
+    };
+    this.getEventHandler = function() {
+      if (this.getSetting('event') === 'hover') {
+        return {
+          mouseEnter: mouseEnterEventHandler,
+          mouseLeave: mouseLeaveEventHandler
+        };
+      } else {
+        return {
+          click: clickEventHandler
+        };
+      }
+    };
     this.callSettingFunction = function(functionName) {
       return this.settings[functionName](element, this.$miniTip[0]);
     };
@@ -183,9 +202,48 @@ jQuery(function() {
         });
       }
     };
-    this.init = function() {
-      var $miniTipArrow, $miniTipArrowShadow, arrowCss, _hover,
+    this.activate = function() {
+      var _hover,
         _this = this;
+      if (this.getSetting('event') === 'hover') {
+        _hover = false;
+        mouseEnterEventHandler = function() {
+          _hover = true;
+          _this.updatePosition();
+          return setTimeout(function() {
+            if (_hover) {
+              return _this.show();
+            }
+          }, _this.getSetting('delay'));
+        };
+        mouseLeaveEventHandler = function() {
+          _hover = false;
+          return _this.hide();
+        };
+        this.$element.hover(mouseEnterEventHandler, mouseLeaveEventHandler);
+      } else {
+        clickEventHandler = function() {
+          _this.updatePosition();
+          _this.show();
+          return window.setTimeout(function() {
+            return _this.hide();
+          }, _this.getSetting('delay'));
+        };
+        this.$element.bind('click', clickEventHandler);
+      }
+      return activated = true;
+    };
+    this.deactivate = function() {
+      if (this.getSetting('event') === 'hover') {
+        this.$element.unbind('mouseenter', mouseEnterEventHandler);
+        this.$element.unbind('mouseleave', mouseLeaveEventHandler);
+      } else {
+        this.$element.unbind('click', clickEventHandler);
+      }
+      return activated = false;
+    };
+    this.init = function() {
+      var $miniTipArrow, $miniTipArrowShadow, arrowCss;
       this.settings = $.extend({}, this.defaults, options);
       this.$miniTipContent = $('<div />', {
         'class': 'minitip-content'
@@ -222,29 +280,7 @@ jQuery(function() {
       ($(window)).resize(this.updatePosition);
       showAnimateProperties = $.extend(showAnimateProperties, this.getSetting('showAnimateProperties'));
       hideAnimateProperties = $.extend(hideAnimateProperties, this.getSetting('hideAnimateProperties'));
-      if (this.getSetting('event') === 'hover') {
-        _hover = false;
-        return this.$element.hover((function() {
-          _hover = true;
-          _this.updatePosition();
-          return setTimeout(function() {
-            if (_hover) {
-              return _this.show();
-            }
-          }, _this.getSetting('delay'));
-        }), (function() {
-          _hover = false;
-          return _this.hide();
-        }));
-      } else {
-        return this.$element.bind('click', function() {
-          _this.updatePosition();
-          _this.show();
-          return window.setTimeout(function() {
-            return _this.hide();
-          }, _this.getSetting('delay'));
-        });
-      }
+      return this.activate();
     };
     this.init();
     return this;

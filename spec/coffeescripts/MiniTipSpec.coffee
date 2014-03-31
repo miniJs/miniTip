@@ -119,7 +119,17 @@ describe 'miniTip', ->
         @clock.tick(200)
 
         expect(plugin.show).toHaveBeenCalled()
+        expect(plugin.isActivated()).toBe(true)
 
+      it 'should not show the tooltip on hover', ->
+        plugin = new $.miniTip( @$element )
+        plugin.deactivate()
+        spyOn(plugin, 'show')
+        @$element.trigger('mouseenter')
+        @clock.tick(200)
+
+        expect(plugin.show.callCount).toBe(0)
+        expect(plugin.isActivated()).toBe(false)
 
       it 'should show the tooltip on click', ->
         plugin = new $.miniTip( @$element, { event: 'click' } )
@@ -127,6 +137,28 @@ describe 'miniTip', ->
         @$element.trigger( 'click' )
 
         expect(plugin.show).toHaveBeenCalled()
+        expect(plugin.isActivated()).toBe(true)
+
+      it 'should not show the tooltip on click', ->
+        plugin = new $.miniTip( @$element, { event: 'click' } )
+        plugin.deactivate()
+        spyOn(plugin, 'show')
+        @$element.trigger('click')
+        @clock.tick(200)
+
+        expect(plugin.show.callCount).toBe(0)
+        expect(plugin.isActivated()).toBe(false)
+
+      it 'should return the mouseEnter and MouseLeave handlers', ->
+        plugin = new $.miniTip( @$element )
+        result = plugin.getEventHandler()
+        expect(result.mouseEnter).not.toBe(null)
+        expect(result.mouseLeave).not.toBe(null)
+
+      it 'should return the onClick event handler', ->
+        plugin = new $.miniTip( @$element, { event: 'click' } )
+        result = plugin.getEventHandler()
+        expect(result.click).not.toBe(null)
 
     describe 'delay', ->
       it "should add 200 milliseconds delay by default", ->

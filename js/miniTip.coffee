@@ -36,6 +36,13 @@ jQuery ->
 
         ## private variables
 
+        # event handlers
+        mouseEnterEventHandler = null
+        mouseLeaveEventHandler = null
+        clickEventHandler = null
+
+        activated = true
+
         # miniTip title
         content = ''
 
@@ -115,6 +122,16 @@ jQuery ->
         @getSetting = (settingKey) ->
           @settings[settingKey]
 
+        @isActivated = ->
+          activated
+
+        # Get event handler
+        @getEventHandler = ->
+          if @getSetting('event') is 'hover'
+            return {mouseEnter: mouseEnterEventHandler, mouseLeave: mouseLeaveEventHandler}
+          else
+            return {click: clickEventHandler}
+
         # call one of the plugin setting functions
         @callSettingFunction = (functionName) ->
           @settings[functionName](element, @$miniTip[0])
@@ -188,6 +205,51 @@ jQuery ->
                   setState 'hidden'
             )
 
+
+        @activate = ->
+          if @getSetting('event') is 'hover'
+              # on hover
+              # keep track of the hover state
+              _hover = false
+
+              mouseEnterEventHandler = =>
+                _hover = true
+
+                @updatePosition()
+                setTimeout(=>
+                    @show() if _hover
+                , @getSetting 'delay')
+
+              mouseLeaveEventHandler = =>
+                _hover = false
+                @hide()
+
+              # attach the hover events to the element
+              @$element.hover( mouseEnterEventHandler, mouseLeaveEventHandler)
+          else
+              # on click
+              clickEventHandler = =>
+                @updatePosition()
+                @show()
+                window.setTimeout(=>
+                    @hide()
+                , @getSetting 'delay')
+
+              @$element.bind('click', clickEventHandler)
+
+          activated = true
+
+        #unbinds the event handlers.
+        @deactivate = ->
+          if @getSetting('event') is 'hover'
+              @$element.unbind('mouseenter', mouseEnterEventHandler)
+              @$element.unbind('mouseleave', mouseLeaveEventHandler)
+          else
+              @$element.unbind('click', clickEventHandler)
+
+          activated = false
+
+
         # init function
         @init = ->
             # merge options and default settings
@@ -229,33 +291,7 @@ jQuery ->
             # set animate properties
             showAnimateProperties = $.extend showAnimateProperties, @getSetting('showAnimateProperties')
             hideAnimateProperties = $.extend hideAnimateProperties, @getSetting('hideAnimateProperties')
-            
-            if @getSetting('event') is 'hover'
-                # on hover
-                # keep track of the hover state
-                _hover = false
-
-                # attach the hover events to the element
-                @$element.hover((=>
-                    _hover = true
-                  
-                    @updatePosition()
-                    setTimeout(=>
-                        @show() if _hover
-                    , @getSetting 'delay')
-                ), (=>
-                    _hover = false
-                    @hide()
-                ))
-            else
-                # on click
-                @$element.bind('click', =>
-                    @updatePosition()
-                    @show()
-                    window.setTimeout(=>
-                        @hide()
-                    , @getSetting 'delay')
-                )
+            @activate()
         # end init function
 
         # initialise the plugin
